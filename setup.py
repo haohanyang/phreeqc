@@ -34,8 +34,7 @@ class CMakeBuild(build_ext):
         # Using this requires trailing slash for auto-detection & inclusion of
         # auxiliary "native" libs
 
-        debug = int(os.environ.get("DEBUG", 0)
-                    ) if self.debug is None else self.debug
+        debug = int(os.environ.get("DEBUG", 0)) if self.debug is None else self.debug
         cfg = "Debug" if debug else "Release"
 
         # CMake lets you override the generator - we need to check this.
@@ -50,14 +49,13 @@ class CMakeBuild(build_ext):
             f"-DPYTHON_EXECUTABLE={sys.executable}",
             f"-DCMAKE_BUILD_TYPE={cfg}",  # not used on MSVC, but no harm,
             "-DBUILD_TESTING=OFF",
-            "-DBUILD_SHARED_LIBS=ON"
+            "-DBUILD_SHARED_LIBS=ON",
         ]
         build_args = []
         # Adding CMake arguments set as environment variable
         # (needed e.g. to build for ARM OSx on conda-forge)
         if "CMAKE_ARGS" in os.environ:
-            cmake_args += [
-                item for item in os.environ["CMAKE_ARGS"].split(" ") if item]
+            cmake_args += [item for item in os.environ["CMAKE_ARGS"].split(" ") if item]
 
         # In this example, we pass in the version to C++. You might not need to.
         cmake_args += [f"-DEXAMPLE_VERSION_INFO={self.distribution.get_version()}"]
@@ -75,16 +73,14 @@ class CMakeBuild(build_ext):
                     ninja_executable_path = Path(ninja.BIN_DIR) / "ninja"
                     cmake_args += [
                         "-GNinja",
-                        f"-DCMAKE_MAKE_PROGRAM:FILEPATH={
-                            ninja_executable_path}",
+                        f"-DCMAKE_MAKE_PROGRAM:FILEPATH={ninja_executable_path}",
                     ]
                 except ImportError:
                     pass
 
         else:
             # Single config generators are handled "normally"
-            single_config = any(
-                x in cmake_generator for x in {"NMake", "Ninja"})
+            single_config = any(x in cmake_generator for x in {"NMake", "Ninja"})
 
             # CMake allows an arch-in-generator style for backward compatibility
             contains_arch = any(x in cmake_generator for x in {"ARM", "Win64"})
@@ -106,8 +102,7 @@ class CMakeBuild(build_ext):
             # Cross-compile support for macOS - respect ARCHFLAGS if set
             archs = re.findall(r"-arch (\S+)", os.environ.get("ARCHFLAGS", ""))
             if archs:
-                cmake_args += [
-                    "-DCMAKE_OSX_ARCHITECTURES={}".format(";".join(archs))]
+                cmake_args += ["-DCMAKE_OSX_ARCHITECTURES={}".format(";".join(archs))]
 
         # Set CMAKE_BUILD_PARALLEL_LEVEL to control the parallel build level
         # across all generators.
@@ -134,7 +129,7 @@ class CMakeBuild(build_ext):
 # logic and declaration, and simpler if you include description/version in a file.
 setup(
     name="phreeqc",
-    version="0.0.1",
+    version="0.0.3",
     author="Haohan Yang",
     description="Python bindings for PHREEQC Version 3",
     long_description="Python bindings for PHREEQC Version 3",
