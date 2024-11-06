@@ -29,5 +29,11 @@ jobs:
           python-version: '3.11'
       - name: Install setuptools
         run: pip install setuptools
-      - name: Build the package
-        run: python setup.py build
+      - name: Build the package distributions
+        run: python setup.py bdist_wheel
+      - name: Publish package
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          user: __token__
+          password: ${{ secrets.TEST_PYPI_API_TOKEN }}     
+          repository-url: https://test.pypi.org/legacy/ 
