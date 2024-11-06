@@ -1,6 +1,6 @@
 #include <exception>
 #include <pybind11/pybind11.h>
-#include "IPhreeqc.h"
+#include "IPhreeqc.hpp"
 
 namespace py = pybind11;
 
@@ -8,18 +8,20 @@ struct Phreeqc
 {
     Phreeqc()
     {
-        int res = CreateIPhreeqc();
-        if (res < 0)
-        {
-            throw std::runtime_error("Failed to create an IPhreeqc instance");
-        }
+        instance = new IPhreeqc();
+    }
 
-        id = res;
+    ~Phreeqc()
+    {
+        if (instance != nullptr)
+        {
+            delete instance;
+        }
     }
 
     void loadDatabase(const char *path)
     {
-        int errors = LoadDatabase(id, path);
+        int errors = instance->LoadDatabase(path);
         if (errors > 0)
         {
             throw std::runtime_error("Failed to load database");
@@ -28,7 +30,7 @@ struct Phreeqc
 
     void runString(const char *input)
     {
-        int errors = RunString(id, input);
+        int errors = instance->RunString(input);
         if (errors > 0)
         {
             throw std::runtime_error("Failed to run string");
@@ -37,19 +39,60 @@ struct Phreeqc
 
     void runFile(const char *path)
     {
-        int errors = RunFile(id, path);
+        int errors = instance->RunFile(path);
         if (errors > 0)
         {
             throw std::runtime_error("Failed to run path");
         }
     }
 
-    const char *getSelectedOutputString()
+    const py::list getSelectedOutput()
     {
-        return GetSelectedOutputString(id);
+        py::list output;
+
+        VAR var;
+        VarInit(&var);
+
+        const int colCount = instance->GetSelectedOutputColumnCount();
+        const int rowCount = instance->GetSelectedOutputRowCount();
+
+        for (int row = 0; row < rowCount; row++)
+        {
+            py::list rowData;
+            for (int col = 0; col < colCount; col++)
+            {
+                if (instance->GetSelectedOutputValue(row, col, &var) != VR_OK)
+                {
+                    rowData.append(py::str("error"));
+                }
+                else
+                {
+                    if (var.type == TT_LONG)
+                    {
+                        rowData.append(py::int_(var.lVal));
+                    }
+                    else if (var.type == TT_DOUBLE)
+                    {
+                        rowData.append(py::float_(var.dVal));
+                    }
+                    else if (var.type == TT_STRING)
+                    {
+                        rowData.append(py::str(var.sVal));
+                    }
+                    else
+                    {
+                        rowData.append(py::none());
+                    }
+                }
+            }
+
+            output.append(rowData);
+        }
+
+        return output;
     }
 
-    int id;
+    IPhreeqc *instance;
 };
 
 PYBIND11_MODULE(phreeqc, m)
@@ -60,5 +103,5 @@ PYBIND11_MODULE(phreeqc, m)
         .def("load_database", &Phreeqc::loadDatabase)
         .def("run_string", &Phreeqc::runString)
         .def("run_file", &Phreeqc::runFile)
-        .def("get_selected_output_string", &Phreeqc::getSelectedOutputString);
+        .def("get_selected_output", &Phreeqc::getSelectedOutput);
 }
