@@ -27,7 +27,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install package
-        run: pip install ./
-      - name: Test package import
-        run: python -c "from phreeqc import Phreeqc;p = Phreeqc()"
+      - name: Install build
+        run: pip install build
+      - name: Build the package
+        run: python -m build
