@@ -30,4 +30,4 @@ jobs:
       - name: Install package
         run: pip install ./
       - name: Test package import
-        run: python3 -c "import phreeqc"
+        run: python -c "from phreeqc import Phreeqc;p = Phreeqc()"
