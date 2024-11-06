@@ -76,7 +76,6 @@ class CMakeBuild(build_ext):
                         f"-DCMAKE_MAKE_PROGRAM:FILEPATH={ninja_executable_path}",
                     ]
                 except ImportError:
-                    print("Failed to import ninja")
                     pass
 
         else:
