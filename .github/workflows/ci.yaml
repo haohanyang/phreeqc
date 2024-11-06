@@ -30,7 +30,7 @@ jobs:
       - name: Install setuptools
         run: pip install setuptools
       - name: Build the package distributions
-        run: python setup.py bdist_wheel
+        run: python setup.py sdist bdist_wheel
       - name: Publish package
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
