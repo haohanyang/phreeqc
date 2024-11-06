@@ -27,7 +27,7 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Install build
-        run: pip install build
+      - name: Install setuptools
+        run: pip install setuptools
       - name: Build the package
-        run: python -m build
+        run: python setup.py build
