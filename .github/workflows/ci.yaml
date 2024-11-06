@@ -34,7 +34,7 @@ jobs:
       - name: Upload dist
         uses: actions/upload-artifact@v4
         with:
-          name: python-package-distributions
+          name: dist-${{ runner.os }}
           path: dist
   
   publish:
@@ -46,10 +46,11 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-      - name: Download all the dists
+      - name: Download all dists
         uses: actions/download-artifact@v4
         with:
-          name: python-package-distributions
-          path: dist/
+          path: dist
+          pattern: dist-*
+          merge-multiple: true
       - name: Show dist
         run: ls dist
