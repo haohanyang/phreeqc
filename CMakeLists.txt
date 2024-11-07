@@ -7,6 +7,8 @@ project (
   LANGUAGES CXX C
   )
 
+set(MODULE_NAME _phreeqc)
+
 # check if this is the root project
 if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   set(STANDALONE_BUILD 1)
@@ -77,9 +79,9 @@ endif()
 
 add_subdirectory(pybind11)
 
-pybind11_add_module(phreeqc ${LIB_TYPE} src/main.cpp)
+pybind11_add_module(${MODULE_NAME} ${LIB_TYPE} src/main.cpp)
 
-target_sources(phreeqc
+target_sources(${MODULE_NAME}
   PRIVATE
     src/IPhreeqc.cpp
     src/CSelectedOutput.cpp
@@ -229,7 +231,7 @@ target_sources(phreeqc
     src/Version.h
 )
 
-target_include_directories(phreeqc
+target_include_directories(${MODULE_NAME}
   PUBLIC
     $<BUILD_INTERFACE:${IPhreeqc_SOURCE_DIR}/src>
     $<BUILD_INTERFACE:${IPhreeqc_SOURCE_DIR}/src/phreeqcpp>
@@ -238,8 +240,8 @@ target_include_directories(phreeqc
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
   )
 
-target_compile_definitions(phreeqc PRIVATE SWIG_SHARED_OBJ)
-target_compile_definitions(phreeqc PRIVATE USE_PHRQ_ALLOC)
+target_compile_definitions(${MODULE_NAME} PRIVATE SWIG_SHARED_OBJ)
+target_compile_definitions(${MODULE_NAME} PRIVATE USE_PHRQ_ALLOC)
 
 if (NOT IPHREEQC_ENABLE_MODULE)
   target_compile_definitions(phreeqc
@@ -276,15 +278,15 @@ endif()
 # Allow user to override POSTFIX properties (but mandate them so that
 # all builds can be installed to the same directory)
 if (NOT CMAKE_DEBUG_POSTFIX)
-  set_target_properties(phreeqc PROPERTIES DEBUG_POSTFIX "d")
+  set_target_properties(${MODULE_NAME} PROPERTIES DEBUG_POSTFIX "d")
 endif()
 
 if (NOT CMAKE_MINSIZEREL_POSTFIX)
-  set_target_properties(phreeqc PROPERTIES MINSIZEREL_POSTFIX "msr")
+  set_target_properties(${MODULE_NAME} PROPERTIES MINSIZEREL_POSTFIX "msr")
 endif()
 
 if (NOT CMAKE_RELWITHDEBINFO_POSTFIX)
-  set_target_properties(phreeqc PROPERTIES RELWITHDEBINFO_POSTFIX "rwd")
+  set_target_properties(${MODULE_NAME} PROPERTIES RELWITHDEBINFO_POSTFIX "rwd")
 endif()
 
 set(IPhreeqc_Headers
@@ -325,7 +327,7 @@ if (MSVC AND BUILD_SHARED_LIBS AND BUILD_CLR_LIBS)
   target_compile_definitions(phreeqc PRIVATE "MULTICHART")
 endif()
 
-set_target_properties(phreeqc PROPERTIES
+set_target_properties(${MODULE_NAME} PROPERTIES
   VERSION "${IPhreeqc_VERSION}"
   SOVERSION "${IPhreeqc_VERSION_MAJOR}"
   )
@@ -349,7 +351,7 @@ if (STANDALONE_BUILD)
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/IPhreeqc
     )
   
-  install(TARGETS  phreeqc
+  install(TARGETS  ${MODULE_NAME}
     EXPORT   IPhreeqcTargets
     LIBRARY  DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -459,4 +461,4 @@ if (STANDALONE_BUILD)
   endif()
 endif()
 
-install(TARGETS phreeqc DESTINATION .)
+install(TARGETS ${MODULE_NAME} DESTINATION phreeqc)

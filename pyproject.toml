@@ -5,7 +5,7 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "phreeqc"
-version = "0.0.7"
+version = "0.0.8"
 description="Python bindings for PHREEQC Version 3"
 readme = "README.md"
 authors = [
@@ -37,7 +37,6 @@ test = ["pytest"]
 cmake.args = ["-DBUILD_TESTING=OFF", "-DBUILD_SHARED_LIBS=ON"]
 wheel.expand-macos-universal-tags = true
 minimum-version = "build-system.requires"
-sdist.include = ["src/phreeqc-stubs/__init__.pyi"]
 
 
 [tool.pytest.ini_options]

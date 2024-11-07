@@ -1,6 +1,5 @@
 from typing import List
 
-
 class Phreeqc:
     def __init__(self) -> None:
         """
@@ -9,7 +8,6 @@ class Phreeqc:
         ...
 
     def get_selected_output_string(self) -> str: ...
-
     def load_database(self, path: str) -> None:
         """
         Load the specified database file into phreeqc.
