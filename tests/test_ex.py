@@ -19,7 +19,8 @@ def test_ex2():
         else:
             database_path = os.path.join("tests", "phreeqc.dat")
         p.load_database(database_path)
-        p.run_string(input)
+        p.run_file(input)
+        p.get_selected_output
 
     output = p.get_selected_output()
 
