@@ -58,6 +58,8 @@ testpaths = ["tests"]
 build-frontend = "build[uv]"
 test-command = "pytest {project}/tests"
 test-extras = ["test"]
+
+[[tool.cibuildwheel.overrides]]
 select = "cp39-*"
 
 [tool.cibuildwheel.pyodide]
