@@ -1,6 +1,5 @@
 import urllib.request
 import re
-import os.path
 from phreeqc import Phreeqc
 from pytest import approx
 
@@ -12,7 +11,7 @@ def test_ex2():
         "https://github.com/usgs-coupled/phreeqc3/raw/refs/heads/master/examples/ex2"
     ) as response:
         input = response.read().decode("utf-8")
-        p.load_database(os.path.join("tests", "phreeqc.dat"))
+        p.load_database("phreeqc.dat")
         p.run_string(input)
 
     output = p.get_selected_output()
