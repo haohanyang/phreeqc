@@ -12,7 +12,7 @@ authors = [
   {name = "Haohan Yang"}
 ]
 license = {file = "LICENSE"}
-requires-python = ">=3.9"
+requires-python = ">=3.12"
 classifiers = [
   "Development Status :: 4 - Beta",
   "License :: OSI Approved :: MIT License",
@@ -55,9 +55,6 @@ testpaths = ["tests"]
 build-frontend = "build"
 test-command = "pytest {project}/tests"
 test-extras = ["test"]
-
-[[tool.cibuildwheel.overrides]]
-select = "cp39-*"
 
 [tool.cibuildwheel.pyodide]
 build-frontend = {name = "build", args = ["--exports", "whole_archive"]}
