@@ -98,7 +98,7 @@ namespace Bindings
     };
 }
 
-PYBIND11_MODULE(phreeqc, m)
+PYBIND11_MODULE(_phreeqc, m)
 {
     m.doc() = "Python bindings for PHREEQC Version 3";
     py::class_<Bindings::Phreeqc>(m, "Phreeqc")
@@ -107,4 +107,10 @@ PYBIND11_MODULE(phreeqc, m)
         .def("run_string", &Bindings::Phreeqc::runString)
         .def("run_file", &Bindings::Phreeqc::runFile)
         .def("get_selected_output", &Bindings::Phreeqc::getSelectedOutput);
+
+#ifdef VERSION_INFO
+    m.attr("__version__") = MACRO_STRINGIFY(VERSION_INFO);
+#else
+    m.attr("__version__") = "dev";
+#endif
 }

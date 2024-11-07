@@ -7,6 +7,8 @@ project (
   LANGUAGES CXX C
   )
 
+set(MODULE_NAME _phreeqc)
+
 # check if this is the root project
 if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
   set(STANDALONE_BUILD 1)
@@ -77,9 +79,9 @@ endif()
 
 add_subdirectory(pybind11)
 
-pybind11_add_module(phreeqc ${LIB_TYPE} src/main.cpp)
+pybind11_add_module(${MODULE_NAME} ${LIB_TYPE} src/main.cpp)
 
-target_sources(phreeqc
+target_sources(${MODULE_NAME}
   PRIVATE
     src/IPhreeqc.cpp
     src/CSelectedOutput.cpp
@@ -229,7 +231,7 @@ target_sources(phreeqc
     src/Version.h
 )
 
-target_include_directories(phreeqc
+target_include_directories(${MODULE_NAME}
   PUBLIC
     $<BUILD_INTERFACE:${IPhreeqc_SOURCE_DIR}/src>
     $<BUILD_INTERFACE:${IPhreeqc_SOURCE_DIR}/src/phreeqcpp>
@@ -238,16 +240,16 @@ target_include_directories(phreeqc
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
   )
 
-target_compile_definitions(phreeqc PRIVATE SWIG_SHARED_OBJ)
-target_compile_definitions(phreeqc PRIVATE USE_PHRQ_ALLOC)
+target_compile_definitions(${MODULE_NAME} PRIVATE SWIG_SHARED_OBJ)
+target_compile_definitions(${MODULE_NAME} PRIVATE USE_PHRQ_ALLOC)
 
 if (NOT IPHREEQC_ENABLE_MODULE)
-  target_compile_definitions(phreeqc
+  target_compile_definitions(${MODULE_NAME}
     PUBLIC
       IPHREEQC_NO_FORTRAN_MODULE
   )
 
-  target_sources(phreeqc
+  target_sources(${MODULE_NAME}
     PRIVATE
       src/fimpl.h
       src/fwrap.cpp
@@ -263,28 +265,28 @@ if (NOT IPHREEQC_ENABLE_MODULE)
 endif()
 
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
-  target_compile_options(phreeqc PRIVATE /wd4251 /wd4275 /wd4793)
+  target_compile_options(${MODULE_NAME} PRIVATE /wd4251 /wd4275 /wd4793)
 endif()
 
 # Disable deprecation warnings for standard C and STL functions in VS2005
 # and later
 if (MSVC_VERSION EQUAL 1400 OR MSVC_VERSION GREATER 1400)
-  target_compile_definitions(phreeqc PUBLIC _CRT_SECURE_NO_DEPRECATE)
-  target_compile_definitions(phreeqc PUBLIC _SCL_SECURE_NO_WARNINGS)
+  target_compile_definitions(${MODULE_NAME} PUBLIC _CRT_SECURE_NO_DEPRECATE)
+  target_compile_definitions(${MODULE_NAME} PUBLIC _SCL_SECURE_NO_WARNINGS)
 endif()
 
 # Allow user to override POSTFIX properties (but mandate them so that
 # all builds can be installed to the same directory)
 if (NOT CMAKE_DEBUG_POSTFIX)
-  set_target_properties(phreeqc PROPERTIES DEBUG_POSTFIX "d")
+  set_target_properties(${MODULE_NAME} PROPERTIES DEBUG_POSTFIX "d")
 endif()
 
 if (NOT CMAKE_MINSIZEREL_POSTFIX)
-  set_target_properties(phreeqc PROPERTIES MINSIZEREL_POSTFIX "msr")
+  set_target_properties(${MODULE_NAME} PROPERTIES MINSIZEREL_POSTFIX "msr")
 endif()
 
 if (NOT CMAKE_RELWITHDEBINFO_POSTFIX)
-  set_target_properties(phreeqc PROPERTIES RELWITHDEBINFO_POSTFIX "rwd")
+  set_target_properties(${MODULE_NAME} PROPERTIES RELWITHDEBINFO_POSTFIX "rwd")
 endif()
 
 set(IPhreeqc_Headers
@@ -320,12 +322,12 @@ if (MSVC AND BUILD_SHARED_LIBS AND BUILD_CLR_LIBS)
   if (MSVC_VERSION LESS 1600)
     message(FATAL_ERROR "CLR options must be set manually for versions prior to Visual Studio 2010")
   endif()
-  set_target_properties(phreeqc PROPERTIES VS_DOTNET_REFERENCES "System;System.Drawing;System.Windows.Forms;${CMAKE_CURRENT_SOURCE_DIR}/src/phreeqcpp/ZedGraph.dll")
-  set_target_properties(phreeqc PROPERTIES COMMON_LANGUAGE_RUNTIME "")
-  target_compile_definitions(phreeqc PRIVATE "MULTICHART")
+  set_target_properties(${MODULE_NAME} PROPERTIES VS_DOTNET_REFERENCES "System;System.Drawing;System.Windows.Forms;${CMAKE_CURRENT_SOURCE_DIR}/src/phreeqcpp/ZedGraph.dll")
+  set_target_properties(${MODULE_NAME} PROPERTIES COMMON_LANGUAGE_RUNTIME "")
+  target_compile_definitions(${MODULE_NAME} PRIVATE "MULTICHART")
 endif()
 
-set_target_properties(phreeqc PROPERTIES
+set_target_properties(${MODULE_NAME} PROPERTIES
   VERSION "${IPhreeqc_VERSION}"
   SOVERSION "${IPhreeqc_VERSION_MAJOR}"
   )
@@ -349,7 +351,7 @@ if (STANDALONE_BUILD)
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/IPhreeqc
     )
   
-  install(TARGETS  phreeqc
+  install(TARGETS  ${MODULE_NAME}
     EXPORT   IPhreeqcTargets
     LIBRARY  DESTINATION ${CMAKE_INSTALL_LIBDIR}
     ARCHIVE  DESTINATION ${CMAKE_INSTALL_LIBDIR}
@@ -383,7 +385,7 @@ if (BUILD_CLR_LIBS)
   endif()
 
   # CLR files
-  target_sources(phreeqc
+  target_sources(${MODULE_NAME}
     PRIVATE
       src/phreeqcpp/ChartHandler.cpp
       src/phreeqcpp/ChartHandler.h
@@ -399,8 +401,8 @@ include (CTest)
 
 if (STANDALONE_BUILD)
   
-  add_subdirectory(database)
-  add_subdirectory(doc)
+  # add_subdirectory(database)
+  # add_subdirectory(doc)
   # add_subdirectory(examples)
   
   if (BUILD_TESTING)
@@ -458,3 +460,5 @@ if (STANDALONE_BUILD)
     add_subdirectory(gtest)
   endif()
 endif()
+
+install(TARGETS ${MODULE_NAME} DESTINATION phreeqc)
