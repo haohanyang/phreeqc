@@ -12,15 +12,14 @@ def test_ex2():
     with urllib.request.urlopen(
         "https://github.com/usgs-coupled/phreeqc3/raw/refs/heads/master/examples/ex2"
     ) as response:
-        input = response.read().decode("utf-8")
+        input_string = response.read().decode("utf-8")
         root = os.getenv("GITHUB_WORKSPACE")
         if root:
             database_path = os.path.join(root, "tests", "phreeqc.dat")
         else:
             database_path = os.path.join("tests", "phreeqc.dat")
         p.load_database(database_path)
-        p.run_file(input)
-        p.get_selected_output
+        p.run_string(input_string)
 
     output = p.get_selected_output()
 

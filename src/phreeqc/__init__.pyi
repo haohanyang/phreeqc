@@ -7,7 +7,6 @@ class Phreeqc:
         """
         ...
 
-    def get_selected_output_string(self) -> str: ...
     def load_database(self, path: str) -> None:
         """
         Load the specified database file into phreeqc.
