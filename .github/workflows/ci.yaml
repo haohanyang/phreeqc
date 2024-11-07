@@ -19,7 +19,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [macos-latest]
+        os: [macos-latest, windows-latest, ubuntu-latest]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -31,11 +31,13 @@ jobs:
         uses: pypa/cibuildwheel@v2.21.3
         env:
           CIBW_BUILD: cp312-*
-          CIBW_ARCHS_MACOS: "arm64 x86_64"
+          CIBW_ARCHS_MACOS: "x86_64 aarch64"
+          CIBW_ARCHS_LINUX: "x86_64 arm64"
+          CIBW_ARCHS_WINDOWS: "AMD64"
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: wheels-${{ runner.os }}
+          name: wheels-${{ matrix.os }}
           path: ./wheelhouse/*.whl
 
   publish:
