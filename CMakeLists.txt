@@ -77,7 +77,7 @@ endif()
 
 add_subdirectory(pybind11)
 
-pybind11_add_module(phreeqc MODULE src/main.cpp)
+pybind11_add_module(phreeqc ${LIB_TYPE} src/main.cpp)
 
 target_sources(phreeqc
   PRIVATE
@@ -458,3 +458,5 @@ if (STANDALONE_BUILD)
     add_subdirectory(gtest)
   endif()
 endif()
+
+install(TARGETS phreeqc DESTINATION .)
