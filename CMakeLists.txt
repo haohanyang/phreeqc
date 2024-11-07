@@ -401,7 +401,7 @@ include (CTest)
 
 if (STANDALONE_BUILD)
   
-  add_subdirectory(database)
+  # add_subdirectory(database)
   add_subdirectory(doc)
   # add_subdirectory(examples)
   
