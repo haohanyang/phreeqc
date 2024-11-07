@@ -244,12 +244,12 @@ target_compile_definitions(${MODULE_NAME} PRIVATE SWIG_SHARED_OBJ)
 target_compile_definitions(${MODULE_NAME} PRIVATE USE_PHRQ_ALLOC)
 
 if (NOT IPHREEQC_ENABLE_MODULE)
-  target_compile_definitions(phreeqc
+  target_compile_definitions(${MODULE_NAME}
     PUBLIC
       IPHREEQC_NO_FORTRAN_MODULE
   )
 
-  target_sources(phreeqc
+  target_sources(${MODULE_NAME}
     PRIVATE
       src/fimpl.h
       src/fwrap.cpp
@@ -265,14 +265,14 @@ if (NOT IPHREEQC_ENABLE_MODULE)
 endif()
 
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL MSVC)
-  target_compile_options(phreeqc PRIVATE /wd4251 /wd4275 /wd4793)
+  target_compile_options(${MODULE_NAME} PRIVATE /wd4251 /wd4275 /wd4793)
 endif()
 
 # Disable deprecation warnings for standard C and STL functions in VS2005
 # and later
 if (MSVC_VERSION EQUAL 1400 OR MSVC_VERSION GREATER 1400)
-  target_compile_definitions(phreeqc PUBLIC _CRT_SECURE_NO_DEPRECATE)
-  target_compile_definitions(phreeqc PUBLIC _SCL_SECURE_NO_WARNINGS)
+  target_compile_definitions(${MODULE_NAME} PUBLIC _CRT_SECURE_NO_DEPRECATE)
+  target_compile_definitions(${MODULE_NAME} PUBLIC _SCL_SECURE_NO_WARNINGS)
 endif()
 
 # Allow user to override POSTFIX properties (but mandate them so that
@@ -322,9 +322,9 @@ if (MSVC AND BUILD_SHARED_LIBS AND BUILD_CLR_LIBS)
   if (MSVC_VERSION LESS 1600)
     message(FATAL_ERROR "CLR options must be set manually for versions prior to Visual Studio 2010")
   endif()
-  set_target_properties(phreeqc PROPERTIES VS_DOTNET_REFERENCES "System;System.Drawing;System.Windows.Forms;${CMAKE_CURRENT_SOURCE_DIR}/src/phreeqcpp/ZedGraph.dll")
-  set_target_properties(phreeqc PROPERTIES COMMON_LANGUAGE_RUNTIME "")
-  target_compile_definitions(phreeqc PRIVATE "MULTICHART")
+  set_target_properties(${MODULE_NAME} PROPERTIES VS_DOTNET_REFERENCES "System;System.Drawing;System.Windows.Forms;${CMAKE_CURRENT_SOURCE_DIR}/src/phreeqcpp/ZedGraph.dll")
+  set_target_properties(${MODULE_NAME} PROPERTIES COMMON_LANGUAGE_RUNTIME "")
+  target_compile_definitions(${MODULE_NAME} PRIVATE "MULTICHART")
 endif()
 
 set_target_properties(${MODULE_NAME} PROPERTIES
@@ -385,7 +385,7 @@ if (BUILD_CLR_LIBS)
   endif()
 
   # CLR files
-  target_sources(phreeqc
+  target_sources(${MODULE_NAME}
     PRIVATE
       src/phreeqcpp/ChartHandler.cpp
       src/phreeqcpp/ChartHandler.h
