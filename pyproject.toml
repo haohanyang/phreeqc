@@ -12,7 +12,7 @@ authors = [
   {name = "Haohan Yang"}
 ]
 license = {file = "LICENSE"}
-requires-python = ">=3.9"
+requires-python = "==12"
 classifiers = [
   "Development Status :: 4 - Beta",
   "License :: OSI Approved :: MIT License",
