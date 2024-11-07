@@ -32,7 +32,7 @@ jobs:
       - name: Build wheels
         run: python -m cibuildwheel --output-dir wheelhouse
         env:
-          CIBW_PROJECT_REQUIRES_PYTHON: ">=12, <13"
+          CIBW_PROJECT_REQUIRES_PYTHON: "==12"
           CIBW_ARCHS: arm64
           CIBW_PLATFORM: macos
       - name: Upload wheels
