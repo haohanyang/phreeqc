@@ -5,14 +5,14 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "phreeqc"
-version = "0.0.5"
+version = "0.0.6"
 description="Python bindings for PHREEQC Version 3"
 readme = "README.md"
 authors = [
   {name = "Haohan Yang"}
 ]
 license = {file = "LICENSE"}
-requires-python = ">=3.12"
+requires-python = ">=3.9"
 classifiers = [
   "Development Status :: 4 - Beta",
   "License :: OSI Approved :: MIT License",
