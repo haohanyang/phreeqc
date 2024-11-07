@@ -27,10 +27,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Install cibuildwheel
-        run: pip install cibuildwheel==2.21.3
       - name: Build wheels
-        run: python -m cibuildwheel --output-dir wheelhouse
+        uses: pypa/cibuildwheel@v2.21.3
         env:
           CIBW_BUILD: cp312-*
           CIBW_ARCHS_MACOS: "arm64"
