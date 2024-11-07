@@ -14,7 +14,7 @@ on:
 
 jobs:
   build:
-    name: Build and install the package
+    name: Build the package
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false
@@ -26,8 +26,8 @@ jobs:
         run: git submodule update --init --recursive
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
-      - name: Install setuptools
-        run: pip install setuptools
+          python-version: '3.9'
+      - name: Install dependencies
+        run: pip install -r requirements.txt
       - name: Build the package
-        run: python setup.py build
+        run: python -m build
