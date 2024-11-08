@@ -7,6 +7,9 @@ jobs:
       - image: cimg/python:3.12
     steps:
       - checkout
+      - run:
+          name: Fetch pybind11
+          command: git submodule update --init
       - setup_remote_docker
       - run:
           name: Build the Linux wheels
@@ -27,6 +30,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Fetch pybind11
+          command: git submodule update --init
+      - run:
           name: Build the macOS wheels
           environment:
             CIBW_BUILD: cp312-*
@@ -39,10 +45,14 @@ jobs:
           path: wheelhouse/
 
   windows-wheels:
-    working_directory: ~/windows-wheels
-    executor: win/server-2022
+    working_directory: C:\Users\circleci\project\windows-wheels
+    executor: win/default
     steps:
-      - checkout
+      - checkout:
+          path: C:\Users\circleci\project
+      - run:
+          name: Fetch pybind11
+          command: git submodule update --init
       - run:
           name: Install python
           command: choco install python --version=3.12.0
@@ -55,11 +65,11 @@ jobs:
             pip3 install cibuildwheel==2.21.3
             cibuildwheel --output-dir wheelhouse
       - store_artifacts:
-          path: wheelhouse/
+          path: wheelhouse
 
 workflows:
   version: 2
-  all-tests:
+  build-wheels:
     jobs:
       - linux-wheels
       - macos-wheels
