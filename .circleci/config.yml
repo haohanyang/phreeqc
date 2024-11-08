@@ -1,0 +1,66 @@
+version: 2
+
+jobs:
+  linux-wheels:
+    working_directory: ~/linux-wheels
+    docker:
+      - image: cimg/python:3.12
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Build the Linux wheels
+          environment:
+            CIBW_BUILD: cp312-*
+            CIBW_ARCHS_LINUX: x86_64
+          command: |
+            python3 -m pip install --user cibuildwheel==2.21.3
+            cibuildwheel --output-dir wheelhouse
+      - store_artifacts:
+          path: wheelhouse/
+
+  macos-wheels:
+    working_directory: ~/macos-wheels
+    macos:
+      xcode: 15.4.0
+    resource_class: macos.m1.medium.gen1
+    steps:
+      - checkout
+      - run:
+          name: Build the macOS wheels
+          environment:
+            CIBW_BUILD: cp312-*
+            CIBW_ARCHS_MACOS: "x86_64 arm64"
+          command: |
+            sudo softwareupdate --install-rosetta --agree-to-license  # for python<=3.8 or x86_64/universal2 tests
+            pip3 install cibuildwheel==2.21.3
+            cibuildwheel --output-dir wheelhouse
+      - store_artifacts:
+          path: wheelhouse/
+
+  windows-wheels:
+    working_directory: ~/windows-wheels
+    executor: win/server-2022
+    steps:
+      - checkout
+      - run:
+          name: Install python
+          command: choco install python --version=3.12.0
+      - run:
+          name: Build the Windows wheels
+          environment:
+            CIBW_BUILD: cp312-*
+            CIBW_ARCHS_WINDOWS: "AMD64"
+          command: |
+            pip3 install cibuildwheel==2.21.3
+            cibuildwheel --output-dir wheelhouse
+      - store_artifacts:
+          path: wheelhouse/
+
+workflows:
+  version: 2
+  all-tests:
+    jobs:
+      - linux-wheels
+      - macos-wheels
+      - windows-wheels
