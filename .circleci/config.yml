@@ -1,5 +1,8 @@
 version: 2
 
+orbs:
+  win: circleci/windows@2.4.0
+
 jobs:
   linux-wheels:
     working_directory: ~/linux-wheels
@@ -11,6 +14,13 @@ jobs:
           name: Fetch pybind11
           command: git submodule update --init
       - setup_remote_docker
+      - run:
+          name: Build sdist
+          command: |
+            pipx run build --sdist
+            pipx run twine check dist/*
+      - store_artifacts:
+          path: dist/
       - run:
           name: Build the Linux wheels
           environment:
