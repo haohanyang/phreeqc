@@ -52,14 +52,12 @@ jobs:
           path: wheelhouse/
 
   windows-wheels:
-    working_directory: C:\Users\circleci\project\windows-wheels
     machine:
       image: "windows-server-2022-gui:current"
     shell: "powershell.exe -ExecutionPolicy Bypass"
     resource_class: "windows.medium"
     steps:
-      - checkout:
-          path: C:\Users\circleci\project
+      - checkout
       - run:
           name: Fetch pybind11
           command: git submodule update --init
