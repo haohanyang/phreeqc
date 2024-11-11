@@ -1,0 +1,24 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index f3d0785e..7518d0ac 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -75,10 +75,11 @@ if (BUILD_SHARED_LIBS)
+   set(LIB_TYPE SHARED)
+ endif()
+ 
+-add_library(IPhreeqc ${LIB_TYPE} src/IPhreeqc.cpp)
++pybind11_add_module(IPhreeqc ${LIB_TYPE} ${CMAKE_SOURCE_DIR}/src/main.cpp)
+ 
+ target_sources(IPhreeqc
+   PRIVATE
++    src/IPhreeqc.cpp
+     src/CSelectedOutput.cpp
+     src/CSelectedOutput.hxx
+     src/CVar.hxx
+@@ -474,3 +475,5 @@ endif()
+ # foreach (_variableName ${_variableNames})
+ #   message(STATUS "${_variableName}=${${_variableName}}")
+ # endforeach()
++
++install(TARGETS IPhreeqc DESTINATION phreeqc)
+\ No newline at end of file
