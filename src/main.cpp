@@ -98,7 +98,7 @@ namespace Bindings
     };
 }
 
-PYBIND11_MODULE(_phreeqc, m)
+PYBIND11_MODULE(IPhreeqc, m)
 {
     m.doc() = "Python bindings for PHREEQC Version 3";
     py::class_<Bindings::Phreeqc>(m, "Phreeqc")
