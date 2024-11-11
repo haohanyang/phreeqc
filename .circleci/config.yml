@@ -8,8 +8,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Fetch pybind11
+          name: Fetch submodules
           command: git submodule update --init
+      - run:
+          name: Apply patch
+          command: python apply_patch.py
       - setup_remote_docker
       - run:
           name: Build sdist
@@ -37,8 +40,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Fetch pybind11
+          name: Fetch submodules
           command: git submodule update --init
+      - run:
+          name: Apply patch
+          command: python apply_patch.py
       - run:
           name: Build the macOS wheels
           environment:
@@ -59,8 +65,11 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Fetch pybind11
+          name: Fetch submodules
           command: git submodule update --init
+      - run:
+          name: Apply patch
+          command: python apply_patch.py
       - run:
           name: Build the Windows wheels
           environment:

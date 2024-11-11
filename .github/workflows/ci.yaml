@@ -18,6 +18,8 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
+      - name: Apply patch
+        run: python apply_patch.py
       - name: Build the package using pip
         run: pip install . pytest
       - name: Test
