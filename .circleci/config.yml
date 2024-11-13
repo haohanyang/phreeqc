@@ -8,7 +8,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Fetch pybind11
+          name: Fetch submodules
           command: git submodule update --init
       - setup_remote_docker
       - run:
@@ -37,7 +37,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Fetch pybind11
+          name: Fetch submodules
           command: git submodule update --init
       - run:
           name: Build the macOS wheels
@@ -59,7 +59,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Fetch pybind11
+          name: Fetch submodules
           command: git submodule update --init
       - run:
           name: Build the Windows wheels
