@@ -28,20 +28,20 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [macos-latest, windows-latest, ubuntu-latest]
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: true
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: '3.9'
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.21.3
         env:
-          CIBW_BUILD: cp312-*
           CIBW_ARCHS_MACOS: "x86_64 arm64"
-          CIBW_ARCHS_WINDOWS: "AMD64"
+          CIBW_ARCHS_WINDOWS: AMD64
+          CIBW_ARCHS_LINUX: "x86_64 aarch64"
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
