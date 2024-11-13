@@ -72,7 +72,7 @@ endif()
 
 add_subdirectory(pybind11)
 
-add_library(IPhreeqc ${LIB_TYPE} src/main.cpp)
+pybind11_add_module(IPhreeqc ${LIB_TYPE} src/main.cpp)
 
 target_sources(IPhreeqc
   PRIVATE
