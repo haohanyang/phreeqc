@@ -10,9 +10,6 @@ jobs:
       - run:
           name: Fetch submodules
           command: git submodule update --init
-      - run:
-          name: Apply patch
-          command: python apply_patch.py
       - setup_remote_docker
       - run:
           name: Build sdist
@@ -43,9 +40,6 @@ jobs:
           name: Fetch submodules
           command: git submodule update --init
       - run:
-          name: Apply patch
-          command: python apply_patch.py
-      - run:
           name: Build the macOS wheels
           environment:
             CIBW_BUILD: cp312-*
@@ -67,9 +61,6 @@ jobs:
       - run:
           name: Fetch submodules
           command: git submodule update --init
-      - run:
-          name: Apply patch
-          command: python apply_patch.py
       - run:
           name: Build the Windows wheels
           environment:
