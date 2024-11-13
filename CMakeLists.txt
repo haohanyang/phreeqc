@@ -226,11 +226,10 @@ target_sources(IPhreeqc
 
 target_include_directories(IPhreeqc
   PUBLIC
-    $<BUILD_INTERFACE:${IPhreeqc_SOURCE_DIR}/iphreeqc/src>
-    $<BUILD_INTERFACE:${IPhreeqc_SOURCE_DIR}/iphreeqc/src/phreeqcpp>
-    $<BUILD_INTERFACE:${IPhreeqc_SOURCE_DIR}/iphreeqc/src/phreeqcpp/common>
-    $<BUILD_INTERFACE:${IPhreeqc_SOURCE_DIR}/iphreeqc/src/phreeqcpp/PhreeqcKeywords>
-    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}>
+    iphreeqc/src
+    iphreeqc/src/phreeqcpp
+    iphreeqc/src/phreeqcpp/common
+    iphreeqc/src/phreeqcpp/PhreeqcKeywords
   )
 
 target_compile_definitions(IPhreeqc PRIVATE SWIG_SHARED_OBJ)
