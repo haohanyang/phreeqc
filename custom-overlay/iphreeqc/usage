@@ -1,0 +1,4 @@
+vcpkg-sample-library provides CMake targets:
+
+find_package(IPhreeqc CONFIG REQUIRED)
+target_link_libraries(main PRIVATE IPhreeqc)
