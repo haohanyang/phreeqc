@@ -8,17 +8,35 @@ on:
     - README.md
 
 jobs:
-  build-and-test:
-    name: Build and test
-    runs-on: ubuntu-latest
+  build-iphreeqc:
+    name: Build IPhreeqc and Python bindings
+    strategy:
+      fail-fast: true
+      matrix:
+        os: [macos-latest, windows-latest, ubuntu-latest]
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: true
+      - name: Install ninja on Linux
+        if: runner.os == 'Linux'
+        run: apt-get install ninja-build
+      - name: Install ninja on macOS
+        if: runner.os == 'macOS'
+        run: brew install ninja
+      - name: Install ninja on Windows
+        if: runner.os == 'Windows'
+        run: choco install ninja
+      - name: Generate build config files
+        run: cmake -G Ninja -Biphreeqc-build -Siphreeqc -DBUILD_TESTING=OFF -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=iphreeqc-install
+      - name: Build and install IPhreeqc
+        run: ninja install
+        working-directory: iphreeqc-build
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-      - name: Build the package using pip
+      - name: Build Python bindings
         run: pip install . pytest
       - name: Test
         run: pytest tests

@@ -189,3 +189,6 @@ dmypy.json
 
 # Cython debug symbols
 cython_debug/
+
+iphreeqc-build/
+iphreeqc-install/
