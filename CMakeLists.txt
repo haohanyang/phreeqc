@@ -2,13 +2,15 @@ cmake_minimum_required(VERSION 3.20)
 
 project(phreeqc)
 
+include(ExternalProject)
+
 add_subdirectory(pybind11)
 
-include(ExternalProject)
+option(IPHREEQC_VERSION "IPhreeqc version or tag name of the IPhreeqc repository" "v3.8.3")
 
 ExternalProject_Add(IPhreeqcBuild
     GIT_REPOSITORY https://github.com/usgs-coupled/iphreeqc.git
-    GIT_TAG        v3.8.3
+    GIT_TAG        ${IPHREEQC_VERSION}
     CMAKE_ARGS     "-DCMAKE_INSTALL_PREFIX=${CMAKE_SOURCE_DIR}/iphreeqc-install" "-DBUILD_TESTING=OFF" "-DCMAKE_BUILD_TYPE=Release" "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     INSTALL_DIR    "${CMAKE_SOURCE_DIR}/iphreeqc-install"
 )
