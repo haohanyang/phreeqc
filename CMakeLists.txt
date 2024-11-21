@@ -11,6 +11,7 @@ option(IPHREEQC_VERSION "IPhreeqc version or tag name of the IPhreeqc repository
 ExternalProject_Add(IPhreeqcBuild
     GIT_REPOSITORY https://github.com/usgs-coupled/iphreeqc.git
     GIT_TAG        ${IPHREEQC_VERSION}
+    BUILD_ALWAYS   1
     CMAKE_ARGS     "-DCMAKE_INSTALL_PREFIX=${CMAKE_SOURCE_DIR}/iphreeqc-install" "-DBUILD_TESTING=OFF" "-DCMAKE_BUILD_TYPE=Release" "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     INSTALL_DIR    "${CMAKE_SOURCE_DIR}/iphreeqc-install"
 )

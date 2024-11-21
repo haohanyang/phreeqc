@@ -17,7 +17,7 @@ jobs:
       with:
         python-version: '3.12'
     - name: Update version
-      run: python script.py version 0.0.12
+      run: python script.py version 0.0.13
     - name: Build sdist
       run: pipx run build --sdist
     - name: Check metadata
@@ -33,7 +33,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest, macos-13]
+        os: [macos-latest]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -42,23 +42,16 @@ jobs:
         with:
           python-version: '3.12'
       - name: Update version
-        run: python script.py version 0.0.12
+        run: python script.py version 0.0.13
       - name: Check OS matrix
         run: echo ${{ matrix.os }}
-      - name: Build wheels on non M1 macOS machine
+      - name: Build wheels
         uses: pypa/cibuildwheel@v2.21.3
-        if: matrix.os != 'macos-latest'
         env:
           CIBW_BUILD: cp312-*
-          CIBW_ARCHS_MACOS: x86_64
+          CIBW_ARCHS_MACOS: 'x86_64 arm64'
           CIBW_ARCHS_WINDOWS: AMD64
           CIBW_ARCHS_LINUX: x86_64
-      - name: Build wheels on M1 macOS machine
-        uses: pypa/cibuildwheel@v2.21.3
-        if: matrix.os == 'macos-latest'
-        env:
-          CIBW_BUILD: cp312-*
-          CIBW_ARCHS_MACOS: arm64
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
