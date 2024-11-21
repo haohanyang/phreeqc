@@ -9,7 +9,7 @@ include(ExternalProject)
 ExternalProject_Add(IPhreeqcBuild
     GIT_REPOSITORY https://github.com/usgs-coupled/iphreeqc.git
     GIT_TAG        v3.8.3
-    CMAKE_ARGS     "-DCMAKE_INSTALL_PREFIX=${CMAKE_SOURCE_DIR}/iphreeqc-install" "-DBUILD_TESTING=OFF" "-DCMAKE_BUILD_TYPE=Release"
+    CMAKE_ARGS     "-DCMAKE_INSTALL_PREFIX=${CMAKE_SOURCE_DIR}/iphreeqc-install" "-DBUILD_TESTING=OFF" "-DCMAKE_BUILD_TYPE=Release" "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     INSTALL_DIR    "${CMAKE_SOURCE_DIR}/iphreeqc-install"
 )
 
