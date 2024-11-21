@@ -20,7 +20,10 @@ pybind11_add_module(_iphreeqc MODULE "${CMAKE_SOURCE_DIR}/src/main.cpp")
 
 add_dependencies(_iphreeqc IPhreeqcBuild)
 
-target_link_directories(_iphreeqc PRIVATE "${CMAKE_SOURCE_DIR}/iphreeqc-install/lib")
+target_link_directories(_iphreeqc 
+    PRIVATE "${CMAKE_SOURCE_DIR}/iphreeqc-install/lib"
+    PRIVATE "${CMAKE_SOURCE_DIR}/iphreeqc-install/lib64"
+)
 
 target_include_directories(_iphreeqc PRIVATE "${CMAKE_SOURCE_DIR}/iphreeqc-install/include")
 
