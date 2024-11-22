@@ -2,8 +2,6 @@
 
 Python bindings of [PHREEQC Version 3](https://www.usgs.gov/software/phreeqc-version-3)
 
-The original C/C++ source code was downloaded from [IPhreeqc Modules](https://water.usgs.gov/water-resources/software/PHREEQC/iphreeqc-3.7.3-15968.tar.gz) made by USGS.
-
 ## Install
 ```
 pip install phreeqc
@@ -12,10 +10,13 @@ pip install phreeqc
 ```py
 from phreeqc import Phreeqc
 
-
 p = Phreeqc()
-p.load_database("phreeqc.dat")
-p.run_string(
+error_count = p.load_database("phreeqc.dat")
+
+if error_count != 0:
+    raise RuntimeError("Failed to load database")
+
+error_count = p.run_string(
     """
 TITLE Example 2.--Temperature dependence of solubility
                   of gypsum and anhydrite
@@ -46,6 +47,18 @@ END
 """
 )
 
+if error_count != 0:
+    raise RuntimeError("Failed to run string")
+
 selected_output = p.get_selected_output()
+
 print(selected_output)
+
 ```
+## License
+This project provides Python bindings for the iphreeqc software. The bindings are distributed under the [MIT License](/LICENSE), which applies to the Python and C++ binding code in this repository.
+
+However, please note:
+
+IPHREEQC, the underlying software to which these bindings provide access, is made available by the U.S. Geological Survey (USGS) under the terms described in its [User Rights Notice](/NOTICE). You can also find the full text of the license in the iphreeqc source or documentation.
+By using this project, you agree to comply with the terms outlined in the iphreeqc license as well as the MIT license for the Python bindings.
