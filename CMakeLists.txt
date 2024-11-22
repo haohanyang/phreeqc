@@ -2,6 +2,8 @@ cmake_minimum_required(VERSION 3.20)
 
 project(phreeqc)
 
+set(CMAKE_CXX_STANDARD 17)
+
 include(ExternalProject)
 
 add_subdirectory(pybind11)
