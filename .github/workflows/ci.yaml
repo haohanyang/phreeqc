@@ -7,22 +7,58 @@ on:
     paths-ignore:
     - README.md
 
-jobs:
-  build-iphreeqc:
-    name: Build IPhreeqc Python bindings
+jobs: 
+  build-sdist:
+    name: Build sdist
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+      with:
+        submodules: true
+    - uses: actions/setup-python@v5
+      with:
+        python-version: '3.10'
+    - name: Build sdist
+      run: pipx run build --sdist
+    - name: Check metadata
+      run: pipx run twine check dist/*
+    - uses: actions/upload-artifact@v4
+      with:
+        name: cibw-sdist
+        path: dist/*.tar.gz
+
+  build-wheels:
+    name: Build wheels
+    runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: true
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+        os: [macos-latest, windows-latest, ubuntu-latest, macos-13]
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: true
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.9'
-      - name: Build Python bindings
-        run: pip install . pytest
-      - name: Test
-        run: pytest tests
+          python-version: '3.10'
+      - name: Build wheels on non M1 macOS machine
+        uses: pypa/cibuildwheel@v2.21.3
+        if: matrix.os != 'macos-latest'
+        env:
+          CIBW_BUILD: cp310-*
+          CIBW_ARCHS_MACOS: x86_64
+          CIBW_ARCHS_WINDOWS: AMD64
+          CIBW_ARCHS_LINUX: x86_64
+      - name: Build wheels on M1 macOS machine
+        uses: pypa/cibuildwheel@v2.21.3
+        if: matrix.os == 'macos-latest'
+        env:
+          CIBW_BUILD: cp310-*
+          CIBW_ARCHS_MACOS: arm64
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: cibw-wheels-${{ matrix.os }}
+          path: wheelhouse/*.whl
+
+  
