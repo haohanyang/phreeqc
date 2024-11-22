@@ -10,14 +10,26 @@ namespace py = pybind11;
 class _Phreeqc : public IPhreeqc
 {
 public:
-    void _AccumulateLine(const char *line)
+    bool _AccumulateLine(const char *line)
     {
         auto result = AccumulateLine(line);
         if (result == VR_OUTOFMEMORY)
         {
-            throw std::runtime_error("Failure, Out of memory");
+            return false;
         }
+        return true;
     }
+
+    bool _SetCurrentSelectedOutputUserNumber(int n)
+    {
+        auto result = SetCurrentSelectedOutputUserNumber(n);
+        if (result == VR_INVALIDARG)
+        {
+            return false;
+        }
+        return true;
+    }
+
     const std::variant<long, double, std::string> _GetSelectedOutputValue(int row, int col)
     {
 
@@ -135,7 +147,7 @@ PYBIND11_MODULE(_iphreeqc, m)
         .def("run_accumulated", &_Phreeqc::RunAccumulated)
         .def("run_file", &_Phreeqc::RunFile)
         .def("run_string", &_Phreeqc::RunString)
-        .def("set_current_selected_output_user_number", &_Phreeqc::SetCurrentSelectedOutputUserNumber)
+        .def("set_current_selected_output_user_number", &_Phreeqc::_SetCurrentSelectedOutputUserNumber)
         .def("set_dump_file_name", &_Phreeqc::SetDumpFileName)
         .def("set_dump_file_on", &_Phreeqc::SetDumpFileOn)
         .def("set_dump_string_on", &_Phreeqc::SetDumpStringOn)
@@ -153,5 +165,5 @@ PYBIND11_MODULE(_iphreeqc, m)
         .def("set_selected_output_file_on", &_Phreeqc::SetSelectedOutputFileOn)
         .def("set_selected_output_string_on", &_Phreeqc::SetSelectedOutputStringOn);
 
-    m.attr("__version__") = "0.1.2";
+    m.attr("__version__") = "0.2.0";
 }
