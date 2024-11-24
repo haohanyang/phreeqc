@@ -1,13 +1,11 @@
 from typing import List, Dict
 
 class Phreeqc:
-    def accumulate_line(self, line: str) -> bool:
+    def accumulate_line(self, line: str) -> None:
         """
         Accumlulate line(s) for input to phreeqc.
         @param line             The line(s) to add for input to phreeqc.
 
-                @retval True            Success
-                @retval False           Out of memory
         @see                    ClearAccumulatedLines, OutputAccumulatedLines, RunAccumulated
 
         """
@@ -58,7 +56,7 @@ class Phreeqc:
         Retrieves the given component.
         @param n                The zero-based index of the component to retrieve.
         @return                 A null terminated string containing the given component.
-                                                                                                        Returns an empty string if n is out of range.
+                                Returns an empty string if n is out of range.
         @see                    GetComponentCount, ListComponents
 
         """
@@ -118,7 +116,7 @@ class Phreeqc:
         Retrieves the given dump line.
         @param n                The zero-based index of the line to retrieve.
         @return                 A null terminated string containing the given line.
-                                                                                                        Returns an empty string if n is out of range.
+                                Returns an empty string if n is out of range.
         @pre                    @ref SetDumpStringOn must have been set to true.
         @see                    GetDumpFileOn, GetDumpString, GetDumpStringLineCount, GetDumpStringOn, SetDumpFileOn, SetDumpStringOn
 
@@ -258,7 +256,7 @@ class Phreeqc:
         Retrieves the given log line.
         @param n                The zero-based index of the line to retrieve.
         @return                 A null terminated string containing the given line.
-                                                                                                        Returns an empty string if n is out of range.
+                                Returns an empty string if n is out of range.
         @pre                    @ref SetLogStringOn must have been set to true and enabled through the use of the KNOBS -logfile option in order to receive any log messages.
         @see                    GetLogFileOn, GetLogString, GetLogStringLineCount, GetLogStringOn, SetLogFileOn, SetLogStringOn
 
@@ -336,7 +334,7 @@ class Phreeqc:
         Retrieves the given output line.
         @param n                The zero-based index of the line to retrieve.
         @return                 A null terminated string containing the given line.
-                                                                                                        Returns an empty string if n is out of range.
+                                Returns an empty string if n is out of range.
         @pre                    @ref SetOutputStringOn must have been set to true.
         @see                    GetOutputFileOn, GetOutputString, GetOutputStringLineCount, GetOutputStringOn, SetOutputFileOn, SetOutputStringOn
 
@@ -426,7 +424,7 @@ class Phreeqc:
         Retrieves the given selected output line of the currently selected user number (see @ref SetCurrentSelectedOutputUserNumber).
         @param n                The zero-based index of the line to retrieve.
         @return                 A null terminated string containing the given line.
-                                                                                                        Returns an empty string if n is out of range.
+                                Returns an empty string if n is out of range.
         @pre                    @ref SetSelectedOutputStringOn must have been set to true.
         @see                    GetCurrentSelectedOutputUserNumber, GetSelectedOutputFileOn, GetSelectedOutputString, GetSelectedOutputStringLineCount, GetSelectedOutputStringOn, SetCurrentSelectedOutputUserNumber, SetSelectedOutputFileOn, SetSelectedOutputStringOn
 

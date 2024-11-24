@@ -10,14 +10,13 @@ namespace py = pybind11;
 class _Phreeqc : public IPhreeqc
 {
 public:
-    bool _AccumulateLine(const char *line)
+    void _AccumulateLine(const char *line)
     {
         auto result = AccumulateLine(line);
         if (result == VR_OUTOFMEMORY)
         {
-            return false;
+            throw std::bad_alloc();
         }
-        return true;
     }
 
     bool _SetCurrentSelectedOutputUserNumber(int n)
@@ -30,7 +29,7 @@ public:
         return true;
     }
 
-    const std::variant<long, double, std::string> _GetSelectedOutputValue(int row, int col)
+    const std::tuple<int, long, double, std::string> _GetSelectedOutputValue(int row, int col)
     {
 
         VAR var;
@@ -41,15 +40,15 @@ public:
         {
             if (var.type == TT_LONG)
             {
-                return var.lVal;
+                return std::make_tuple(0, var.lVal, 0.0, "");
             }
             else if (var.type == TT_DOUBLE)
             {
-                return var.dVal;
+                return std::make_tuple(1, 0, var.dVal, "");
             }
             else if (var.type == TT_STRING)
             {
-                return std::string(var.sVal);
+                return std::make_tuple(2, 0, 0.0, var.sVal);
             }
             else if (var.type == TT_EMPTY)
             {
@@ -62,23 +61,23 @@ public:
         }
         else if (result == VR_OUTOFMEMORY)
         {
-            throw std::runtime_error("Failure, Out of memory");
+            throw std::bad_alloc();
         }
         else if (result == VR_BADVARTYPE)
         {
-            throw std::runtime_error("Failure, Invalid VAR type");
+            throw std::invalid_argument("Failure, Invalid VAR type");
         }
         else if (result == VR_INVALIDARG)
         {
-            throw std::runtime_error("Failure, Invalid argument");
+            throw std::invalid_argument("Failure, Invalid argument");
         }
         else if (result == VR_INVALIDROW)
         {
-            throw std::runtime_error("Invalid row");
+            throw std::invalid_argument("Invalid row");
         }
         else
         {
-            throw std::runtime_error("Invalid column");
+            throw std::invalid_argument("Invalid column");
         }
     }
 };
@@ -133,7 +132,7 @@ PYBIND11_MODULE(_iphreeqc, m)
         .def("get_selected_output_string_line", &_Phreeqc::GetSelectedOutputStringLine)
         .def("get_selected_output_string_line_count", &_Phreeqc::GetSelectedOutputStringLineCount)
         .def("get_selected_output_string_on", &_Phreeqc::GetSelectedOutputStringOn)
-        .def("get_selected_output_value", &_Phreeqc::_GetSelectedOutputValue)
+        .def("_get_selected_output_value", &_Phreeqc::_GetSelectedOutputValue)
         .def("get_version_string", &_Phreeqc::GetVersionString)
         .def("get_warning_string", &_Phreeqc::GetWarningString)
         .def("get_warning_string_line", &_Phreeqc::GetWarningStringLine)
