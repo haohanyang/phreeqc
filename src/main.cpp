@@ -10,14 +10,13 @@ namespace py = pybind11;
 class _Phreeqc : public IPhreeqc
 {
 public:
-    bool _AccumulateLine(const char *line)
+    void _AccumulateLine(const char *line)
     {
         auto result = AccumulateLine(line);
         if (result == VR_OUTOFMEMORY)
         {
-            return false;
+            throw std::bad_alloc();
         }
-        return true;
     }
 
     bool _SetCurrentSelectedOutputUserNumber(int n)
