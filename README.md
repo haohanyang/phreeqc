@@ -1,6 +1,6 @@
 # PHREEQC
 
-Python bindings of [PHREEQC Version 3](https://www.usgs.gov/software/phreeqc-version-3)
+Python bindings of [IPHREEQC](https://www.usgs.gov/software/phreeqc-version-3)
 
 ## Install
 ```

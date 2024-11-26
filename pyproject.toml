@@ -5,8 +5,8 @@ build-backend = "scikit_build_core.build"
 
 [project]
 name = "phreeqc"
-version = "0.2.0"
-description="Python bindings for PHREEQC Version 3"
+version = "0.2.1"
+description="Python bindings for IPHREEQC"
 readme = "README.md"
 authors = [
   {name = "Haohan Yang"}

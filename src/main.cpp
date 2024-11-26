@@ -10,13 +10,14 @@ namespace py = pybind11;
 class _Phreeqc : public IPhreeqc
 {
 public:
-    void _AccumulateLine(const char *line)
+    bool _AccumulateLine(const char *line)
     {
         auto result = AccumulateLine(line);
         if (result == VR_OUTOFMEMORY)
         {
-            throw std::bad_alloc();
+            return false;
         }
+        return true;
     }
 
     bool _SetCurrentSelectedOutputUserNumber(int n)
@@ -133,7 +134,7 @@ PYBIND11_MODULE(_iphreeqc, m)
         .def("get_selected_output_string_line_count", &_Phreeqc::GetSelectedOutputStringLineCount)
         .def("get_selected_output_string_on", &_Phreeqc::GetSelectedOutputStringOn)
         .def("_get_selected_output_value", &_Phreeqc::_GetSelectedOutputValue)
-        .def("get_version_string", &_Phreeqc::GetVersionString)
+        .def_static("get_version_string", &_Phreeqc::GetVersionString)
         .def("get_warning_string", &_Phreeqc::GetWarningString)
         .def("get_warning_string_line", &_Phreeqc::GetWarningStringLine)
         .def("get_warning_string_line_count", &_Phreeqc::GetWarningStringLineCount)

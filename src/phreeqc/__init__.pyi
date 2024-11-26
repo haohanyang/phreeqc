@@ -1,11 +1,18 @@
 from typing import List, Dict
 
 class Phreeqc:
-    def accumulate_line(self, line: str) -> None:
+    def __init__(self) -> None:
+        """
+        Constructor.
+        """
+        ...
+
+    def accumulate_line(self, line: str) -> bool:
         """
         Accumlulate line(s) for input to phreeqc.
         @param line             The line(s) to add for input to phreeqc.
-
+        @retval True            Success
+        @retval False           Out of memory
         @see                    ClearAccumulatedLines, OutputAccumulatedLines, RunAccumulated
 
         """
@@ -93,8 +100,8 @@ class Phreeqc:
     def get_dump_file_on(self) -> bool:
         """
         Retrieves the current value of the dump file switch.
-        @retval true            Output is written to the <B>DUMP</B> (<B><I>dump.id.out</I></B> if unspecified, where id is obtained from @ref GetId) file.
-        @retval false           No output is written.
+        @retval True            Output is written to the <B>DUMP</B> (<B><I>dump.id.out</I></B> if unspecified, where id is obtained from @ref GetId) file.
+        @retval False           No output is written.
         @see                    GetDumpStringLine, GetDumpStringLineCount, GetDumpStringOn, GetDumpString, SetDumpFileOn, SetDumpStringOn
 
         """
@@ -105,7 +112,7 @@ class Phreeqc:
         Retrieves the string buffer containing <b>DUMP</b> output.
         @return                 A null terminated string containing <b>DUMP</b> output.
         @pre
-                        @ref SetDumpStringOn must have been set to true in order to receive <b>DUMP</b> output.
+            @ref SetDumpStringOn must have been set to True in order to receive <b>DUMP</b> output.
         @see                    GetDumpStringLine, GetDumpFileOn, GetDumpStringLineCount, GetDumpStringOn, SetDumpFileOn, SetDumpStringOn
 
         """
@@ -117,7 +124,7 @@ class Phreeqc:
         @param n                The zero-based index of the line to retrieve.
         @return                 A null terminated string containing the given line.
                                 Returns an empty string if n is out of range.
-        @pre                    @ref SetDumpStringOn must have been set to true.
+        @pre                    @ref SetDumpStringOn must have been set to True.
         @see                    GetDumpFileOn, GetDumpString, GetDumpStringLineCount, GetDumpStringOn, SetDumpFileOn, SetDumpStringOn
 
         """
@@ -127,7 +134,7 @@ class Phreeqc:
         """
         Retrieves the number of lines in the current dump string buffer.
         @return                 The number of lines.
-        @pre                    @ref SetDumpStringOn must have been set to true.
+        @pre                    @ref SetDumpStringOn must have been set to True.
         @see                    GetDumpFileOn, GetDumpString, GetDumpStringLine, GetDumpStringOn, SetDumpFileOn, SetDumpStringOn
 
         """
@@ -136,8 +143,8 @@ class Phreeqc:
     def get_dump_string_on(self) -> bool:
         """
         Retrieves the current value of the dump string switch.
-        @retval true            Output defined by the <B>DUMP</B> keyword is stored.
-        @retval false           No output is stored.
+        @retval True            Output defined by the <B>DUMP</B> keyword is stored.
+        @retval False           No output is stored.
         @see                    GetDumpFileOn, GetDumpString, GetDumpStringLine, GetDumpStringLineCount, SetDumpFileOn, SetDumpStringOn
 
         """
@@ -155,8 +162,8 @@ class Phreeqc:
     def get_error_file_on(self) -> bool:
         """
         Retrieves the current value of the error file switch.
-        @retval true            Errors are written to the <B><I>phreeqc.id.err</I></B> (where id is obtained from @ref GetId) file.
-        @retval false           No errors are written.
+        @retval True            Errors are written to the <B><I>phreeqc.id.err</I></B> (where id is obtained from @ref GetId) file.
+        @retval False           No errors are written.
         @see                    SetErrorFileOn
 
         """
@@ -165,8 +172,8 @@ class Phreeqc:
     def get_error_on(self) -> bool:
         """
         Retrieves the current value of the error switch.
-        @retval true            Error messages are sent to the error file and to the string buffer
-        @retval false           No errors are sent.
+        @retval True            Error messages are sent to the error file and to the string buffer
+        @retval False           No errors are sent.
         @see                    SetErrorOn
 
         """
@@ -203,8 +210,8 @@ class Phreeqc:
     def get_error_string_on(self) -> bool:
         """
         Retrieves the current value of the error string switch.
-        @retval true            Error output is stored.
-        @retval false           No error output is stored.
+        @retval True            Error output is stored.
+        @retval False           No error output is stored.
         @see                    GetErrorFileOn, GetErrorString, GetErrorStringLine, GetErrorStringLineCount, SetErrorFileOn, SetErrorStringOn
 
         """
@@ -231,10 +238,10 @@ class Phreeqc:
     def get_log_file_on(self) -> bool:
         """
         Retrieves the current value of the log file switch.
-        @retval true            Log messages are written to the <B><I>phreeqc.id.log</I></B> (where id is obtained from @ref GetId) file.
-        @retval false           No log messages are written.
+        @retval True            Log messages are written to the <B><I>phreeqc.id.log</I></B> (where id is obtained from @ref GetId) file.
+        @retval False           No log messages are written.
         @remarks
-                        Logging must be enabled through the use of the KNOBS -logfile option in order to receive any log messages.
+            Logging must be enabled through the use of the KNOBS -logfile option in order to receive any log messages.
         @see                    SetLogFileOn
 
         """
@@ -245,7 +252,7 @@ class Phreeqc:
         Retrieves the string buffer containing phreeqc log output.
         @return                 A null terminated string containing log output.
         @pre
-                        @ref SetLogStringOn must have been set to true and enabled through the use of the KNOBS -logfile option in order to receive any log messages.
+            @ref SetLogStringOn must have been set to True and enabled through the use of the KNOBS -logfile option in order to receive any log messages.
         @see                    GetLogStringLine, GetLogFileOn, GetLogStringLineCount, GetLogStringOn, SetLogFileOn, SetLogStringOn
 
         """
@@ -257,7 +264,7 @@ class Phreeqc:
         @param n                The zero-based index of the line to retrieve.
         @return                 A null terminated string containing the given line.
                                 Returns an empty string if n is out of range.
-        @pre                    @ref SetLogStringOn must have been set to true and enabled through the use of the KNOBS -logfile option in order to receive any log messages.
+        @pre                    @ref SetLogStringOn must have been set to True and enabled through the use of the KNOBS -logfile option in order to receive any log messages.
         @see                    GetLogFileOn, GetLogString, GetLogStringLineCount, GetLogStringOn, SetLogFileOn, SetLogStringOn
 
         """
@@ -267,7 +274,7 @@ class Phreeqc:
         """
         Retrieves the number of lines in the current log string buffer.
         @return                 The number of lines.
-        @pre                    @ref SetLogStringOn must have been set to true and enabled through the use of the KNOBS -logfile option in order to receive any log messages.
+        @pre                    @ref SetLogStringOn must have been set to True and enabled through the use of the KNOBS -logfile option in order to receive any log messages.
         @see                    GetLogFileOn, GetLogString, GetLogStringLine, GetLogStringOn, SetLogFileOn, SetLogStringOn
 
         """
@@ -282,8 +289,8 @@ class Phreeqc:
     def get_log_string_on(self) -> bool:
         """
         Retrieves the current value of the log string switch.
-        @retval true            Log output is stored.
-        @retval false           No log output is stored.
+        @retval True            Log output is stored.
+        @retval False           No log output is stored.
         @see                    GetLogFileOn, GetLogString, GetLogStringLine, GetLogStringLineCount, SetLogFileOn, SetLogStringOn
 
         """
@@ -311,8 +318,8 @@ class Phreeqc:
     def get_output_file_on(self) -> bool:
         """
         Retrieves the current value of the output file switch.
-        @retval true            Output is written to the <B><I>phreeqc.id.out</I></B> (where id is obtained from @ref GetId) file.
-        @retval false           No output is written.
+        @retval True            Output is written to the <B><I>phreeqc.id.out</I></B> (where id is obtained from @ref GetId) file.
+        @retval False           No output is written.
         @see                    GetOutputFileOn, GetOutputString, GetOutputStringOn, GetOutputStringLine, GetOutputStringLineCount, SetOutputFileName, SetOutputFileOn, SetOutputStringOn
 
         """
@@ -323,7 +330,7 @@ class Phreeqc:
         Retrieves the string buffer containing phreeqc output.
         @return                 A null terminated string containing phreeqc output.
         @pre
-                        @ref SetOutputStringOn must have been set to true in order to receive output.
+            @ref SetOutputStringOn must have been set to True in order to receive output.
         @see                    GetOutputStringLine, GetOutputFileOn, GetOutputStringLineCount, GetOutputStringOn, SetOutputFileOn, SetOutputStringOn
 
         """
@@ -335,7 +342,7 @@ class Phreeqc:
         @param n                The zero-based index of the line to retrieve.
         @return                 A null terminated string containing the given line.
                                 Returns an empty string if n is out of range.
-        @pre                    @ref SetOutputStringOn must have been set to true.
+        @pre                    @ref SetOutputStringOn must have been set to True.
         @see                    GetOutputFileOn, GetOutputString, GetOutputStringLineCount, GetOutputStringOn, SetOutputFileOn, SetOutputStringOn
 
         """
@@ -345,7 +352,7 @@ class Phreeqc:
         """
         Retrieves the number of lines in the current output string buffer.
         @return                 The number of lines.
-        @pre                    @ref SetOutputStringOn must have been set to true.
+        @pre                    @ref SetOutputStringOn must have been set to True.
         @see                    GetOutputFileOn, GetOutputString, GetOutputStringLine, GetOutputStringOn, SetOutputFileOn, SetOutputStringOn
 
         """
@@ -354,8 +361,8 @@ class Phreeqc:
     def get_output_string_on(self) -> bool:
         """
         Retrieves the current value of the output string switch.
-        @retval true            Phreeqc output is stored.
-        @retval false           No phreeqc output is stored.
+        @retval True            Phreeqc output is stored.
+        @retval False           No phreeqc output is stored.
         @see                    GetOutputFileOn, GetOutputString, GetOutputStringLine, GetOutputStringLineCount, SetOutputFileOn, SetOutputStringOn
 
         """
@@ -392,8 +399,8 @@ class Phreeqc:
     def get_selected_output_file_on(self) -> bool:
         """
         Retrieves the current selected-output file switch (see @ref SetCurrentSelectedOutputUserNumber).
-        @retval true            Output is written to the selected-output (<B><I>selected_n.id.out</I></B> if unspecified, where id is obtained from @ref GetId) file.
-        @retval false           No output is written.
+        @retval True            Output is written to the selected-output (<B><I>selected_n.id.out</I></B> if unspecified, where id is obtained from @ref GetId) file.
+        @retval False           No output is written.
         @see                    GetSelectedOutputValue, GetSelectedOutputColumnCount, GetSelectedOutputRowCount, SetCurrentSelectedOutputUserNumber, SetSelectedOutputFileOn
 
         """
@@ -413,7 +420,7 @@ class Phreeqc:
         Retrieves the string buffer containing <b>SELECTED_OUTPUT</b> for the currently selected user number (see @ref SetCurrentSelectedOutputUserNumber).
         @return                 A null terminated string containing <b>SELECTED_OUTPUT</b>.
         @pre
-                        @ref SetSelectedOutputStringOn must have been set to true in order to receive <b>SELECTED_OUTPUT</b>.
+            @ref SetSelectedOutputStringOn must have been set to True in order to receive <b>SELECTED_OUTPUT</b>.
         @see                    GetCurrentSelectedOutputUserNumber, GetSelectedOutputStringLine, GetSelectedOutputFileOn, GetSelectedOutputStringLineCount, GetSelectedOutputStringOn, GetSelectedOutputString, SetCurrentSelectedOutputUserNumber, SetSelectedOutputFileOn, SetSelectedOutputStringOn
 
         """
@@ -425,7 +432,7 @@ class Phreeqc:
         @param n                The zero-based index of the line to retrieve.
         @return                 A null terminated string containing the given line.
                                 Returns an empty string if n is out of range.
-        @pre                    @ref SetSelectedOutputStringOn must have been set to true.
+        @pre                    @ref SetSelectedOutputStringOn must have been set to True.
         @see                    GetCurrentSelectedOutputUserNumber, GetSelectedOutputFileOn, GetSelectedOutputString, GetSelectedOutputStringLineCount, GetSelectedOutputStringOn, SetCurrentSelectedOutputUserNumber, SetSelectedOutputFileOn, SetSelectedOutputStringOn
 
         """
@@ -435,7 +442,7 @@ class Phreeqc:
         """
         Retrieves the number of lines in the current selected output string buffer (see @ref SetCurrentSelectedOutputUserNumber).
         @return                 The number of lines.
-        @pre                    @ref SetSelectedOutputStringOn must have been set to true.
+        @pre                    @ref SetSelectedOutputStringOn must have been set to True.
         @see                    GetCurrentSelectedOutputUserNumber, GetSelectedOutputFileOn, GetSelectedOutputString, GetSelectedOutputStringLine, GetSelectedOutputStringOn, SetCurrentSelectedOutputUserNumber, SetSelectedOutputFileOn, SetSelectedOutputStringOn
 
         """
@@ -444,8 +451,8 @@ class Phreeqc:
     def get_selected_output_string_on(self) -> bool:
         """
         Retrieves the value of the current selected output string switch (see @ref SetCurrentSelectedOutputUserNumber).
-        @retval true            Output defined by the <B>SELECTED_OUTPUT</B> keyword is stored.
-        @retval false           No output is stored.
+        @retval True            Output defined by the <B>SELECTED_OUTPUT</B> keyword is stored.
+        @retval False           No output is stored.
         @see                    GetSelectedOutputFileOn, GetSelectedOutputString, GetSelectedOutputStringLine, GetSelectedOutputStringLineCount, SetCurrentSelectedOutputUserNumber, SetSelectedOutputFileOn, SetSelectedOutputStringOn
 
         """
@@ -453,19 +460,17 @@ class Phreeqc:
 
     def get_selected_output_value(self, row: int, col: int) -> int | float | str:
         """
-                   Returns the value associated with the specified row and column.  The current <b>SELECTED_OUTPUT</b> block is set using the @ref SetCurrentSelectedOutputUserNumber method.
-                   @param row              The row index.
-                   @param col              The column index.
+           Returns the @c VAR associated with the specified row and column.  The current <b>SELECTED_OUTPUT</b> block is set using the @ref SetCurrentSelectedOutputUserNumber method.
+           @param row              The row index.
+           @param col              The column index.
 
-                   Raise exception if fails
-
-                   @see                    GetCurrentSelectedOutputUserNumber, GetSelectedOutputColumnCount, GetSelectedOutputFileOn, GetSelectedOutputRowCount, GetSelectedOutputValue2, SetCurrentSelectedOutputUserNumber, SetSelectedOutputFileOn
-                   @remarks
-                                   Row 0 contains the column headings to the selected_ouput.
-                   @par Examples:
-                   The headings will include a suffix and/or prefix in order to differentiate the
-                   columns.
-                   @htmlonly
+           @see                    GetCurrentSelectedOutputUserNumber, GetSelectedOutputColumnCount, GetSelectedOutputFileOn, GetSelectedOutputRowCount, GetSelectedOutputValue2, SetCurrentSelectedOutputUserNumber, SetSelectedOutputFileOn
+           @remarks
+               Row 0 contains the column headings to the selected_ouput.
+           @par Examples:
+           The headings will include a suffix and/or prefix in order to differentiate the
+           columns.
+           @htmlonly
         <p>
         <table border=1>
 
@@ -481,14 +486,14 @@ class Phreeqc:
         <TR VALIGN="top">
         <TD width=65%>
         <CODE><PRE>
-                        SELECTED_OUTPUT
-                        -reset false
-                        -totals Ca Na
+          SELECTED_OUTPUT
+                -reset False
+                -totals Ca Na
         </PRE></CODE>
         </TD>
         <TD width=35%>
         <CODE><PRE>
-                        Ca(mol/kgw)  Na(mol/kgw)
+          Ca(mol/kgw)  Na(mol/kgw)
         </PRE></CODE>
         </TD>
         </TR>
@@ -496,14 +501,14 @@ class Phreeqc:
         <TR VALIGN="top">
         <TD width=65%>
         <CODE><PRE>
-                        SELECTED_OUTPUT
-                        -reset false
-                        -molalities Fe+2 Hfo_sOZn+
+          SELECTED_OUTPUT
+                -reset False
+                -molalities Fe+2 Hfo_sOZn+
         </PRE></CODE>
         </TD>
         <TD width=35%>
         <CODE><PRE>
-                        m_Fe+2(mol/kgw)  m_Hfo_sOZn+(mol/kgw)
+          m_Fe+2(mol/kgw)  m_Hfo_sOZn+(mol/kgw)
         </PRE></CODE>
         </TD>
         </TR>
@@ -511,14 +516,14 @@ class Phreeqc:
         <TR VALIGN="top">
         <TD width=65%>
         <CODE><PRE>
-                        SELECTED_OUTPUT
-                        -reset false
-                        -activities H+ Ca+2
+          SELECTED_OUTPUT
+                -reset False
+                -activities H+ Ca+2
         </PRE></CODE>
         </TD>
         <TD width=35%>
         <CODE><PRE>
-                        la_H+  la_Ca+2
+          la_H+  la_Ca+2
         </PRE></CODE>
         </TD>
         </TR>
@@ -526,14 +531,14 @@ class Phreeqc:
         <TR VALIGN="top">
         <TD width=65%>
         <CODE><PRE>
-                        SELECTED_OUTPUT
-                        -reset false
-                        -equilibrium_phases Calcite Dolomite
+          SELECTED_OUTPUT
+                -reset False
+                -equilibrium_phases Calcite Dolomite
         </PRE></CODE>
         </TD>
         <TD width=35%>
         <CODE><PRE>
-                        Calcite  d_Calcite  Dolomite  d_Dolomite
+          Calcite  d_Calcite  Dolomite  d_Dolomite
         </PRE></CODE>
         </TD>
         </TR>
@@ -541,14 +546,14 @@ class Phreeqc:
         <TR VALIGN="top">
         <TD width=65%>
         <CODE><PRE>
-                        SELECTED_OUTPUT
-                        -reset false
-                        -saturation_indices CO2(g) Siderite
+          SELECTED_OUTPUT
+                -reset False
+                -saturation_indices CO2(g) Siderite
         </PRE></CODE>
         </TD>
         <TD width=35%>
         <CODE><PRE>
-                        si_CO2(g)  si_Siderite
+          si_CO2(g)  si_Siderite
         </PRE></CODE>
         </TD>
         </TR>
@@ -556,14 +561,14 @@ class Phreeqc:
         <TR VALIGN="top">
         <TD width=65%>
         <CODE><PRE>
-                        SELECTED_OUTPUT
-                        -reset false
-                        -gases CO2(g) N2(g)
+          SELECTED_OUTPUT
+                -reset False
+                -gases CO2(g) N2(g)
         </PRE></CODE>
         </TD>
         <TD width=35%>
         <CODE><PRE>
-                        pressure "total mol" volume g_CO2(g) g_N2(g)
+          pressure "total mol" volume g_CO2(g) g_N2(g)
         </PRE></CODE>
         </TD>
         </TR>
@@ -571,14 +576,14 @@ class Phreeqc:
         <TR VALIGN="top">
         <TD width=65%>
         <CODE><PRE>
-                        SELECTED_OUTPUT
-                        -reset false
-                        -kinetic_reactants CH2O Pyrite
+          SELECTED_OUTPUT
+                -reset False
+                -kinetic_reactants CH2O Pyrite
         </PRE></CODE>
         </TD>
         <TD width=35%>
         <CODE><PRE>
-                        k_CH2O dk_CH2O k_Pyrite dk_Pyrite
+          k_CH2O dk_CH2O k_Pyrite dk_Pyrite
         </PRE></CODE>
         </TD>
         </TR>
@@ -586,20 +591,38 @@ class Phreeqc:
         <TR VALIGN="top">
         <TD width=65%>
         <CODE><PRE>
-                        SELECTED_OUTPUT
-                        -reset false
-                        -solid_solutions CaSO4 SrSO4
+          SELECTED_OUTPUT
+                -reset False
+                -solid_solutions CaSO4 SrSO4
         </PRE></CODE>
         </TD>
         <TD width=35%>
         <CODE><PRE>
-                        s_CaSO4 s_SrSO4
+          s_CaSO4 s_SrSO4
         </PRE></CODE>
         </TD>
         </TR>
 
         </table>
-                          @endhtmlonly
+           @endhtmlonly
+
+        """
+        ...
+
+    @staticmethod
+    def get_version_string() -> str:
+        """
+        Retrieves the string buffer containing the version in the form of X.X.X-XXXX.
+        @return                 A null terminated string containing the IPhreeqc version number.
+
+        """
+        ...
+
+    def get_warning_string(self) -> str:
+        """
+        Retrieves the warning messages from the last call to @ref RunAccumulated, @ref RunFile, @ref RunString, @ref LoadDatabase, or @ref LoadDatabaseString.
+        @return                 A null terminated string containing warning messages.
+        @see                    GetWarningStringLine, GetWarningStringLineCount, OutputWarningString
 
         """
         ...
@@ -636,12 +659,12 @@ class Phreeqc:
         """
         Load the specified database file into phreeqc.
         @param filename         The name of the phreeqc database to load.
-                                                                                                        The full path (or relative path with respect to the working directory) will be required if the file is not
-                                                                                                        in the current working directory.
+                                The full path (or relative path with respect to the working directory) will be required if the file is not
+                                in the current working directory.
         @return                 The number of errors encountered.
         @see                    LoadDatabaseString
         @remarks
-                        All previous definitions are cleared.
+            All previous definitions are cleared.
 
         """
         ...
@@ -653,7 +676,7 @@ class Phreeqc:
         @return                 The number of errors encountered.
         @see                    LoadDatabaseString
         @remarks
-                        All previous definitions are cleared.
+            All previous definitions are cleared.
 
         """
         ...
@@ -689,9 +712,9 @@ class Phreeqc:
         @return                 The number of errors encountered.
         @see                    AccumulateLine, ClearAccumulatedLines, OutputAccumulatedLines, RunFile, RunString
         @remarks
-                        The accumulated input is cleared at the next call to @ref AccumulateLine.
+            The accumulated input is cleared at the next call to @ref AccumulateLine.
         @pre
-                        @ref LoadDatabase/@ref LoadDatabaseString must have been called and returned 0 (zero) errors.
+            @ref LoadDatabase/@ref LoadDatabaseString must have been called and returned 0 (zero) errors.
 
         """
         ...
@@ -703,7 +726,7 @@ class Phreeqc:
         @return                 The number of errors encountered during the run.
         @see                    RunAccumulated, RunString
         @pre
-                        @ref LoadDatabase/@ref LoadDatabaseString must have been called and returned 0 (zero) errors.
+            @ref LoadDatabase/@ref LoadDatabaseString must have been called and returned 0 (zero) errors.
 
         """
         ...
@@ -715,21 +738,21 @@ class Phreeqc:
         @return                 The number of errors encountered during the run.
         @see                    RunAccumulated, RunFile
         @pre
-                        @ref LoadDatabase/@ref LoadDatabaseString must have been called and returned 0 (zero) errors.
+            @ref LoadDatabase/@ref LoadDatabaseString must have been called and returned 0 (zero) errors.
 
         """
         ...
 
     def set_current_selected_output_user_number(self, n: int) -> bool:
         """
-        Sets the current <B>SELECTED_OUTPUT</B> user number for use in subsequent calls to (@ref GetSelectedOutputColumnCount,
+            Sets the current <B>SELECTED_OUTPUT</B> user number for use in subsequent calls to (@ref GetSelectedOutputColumnCount,
         @ref GetSelectedOutputFileName, @ref GetSelectedOutputRowCount, @ref GetSelectedOutputString, @ref GetSelectedOutputStringLine,
         @ref GetSelectedOutputStringLineCount, @ref GetSelectedOutputValue, @ref GetSelectedOutputValue2) routines.
-        The initial setting is 1.
-        @param n                The user number as specified in the <B>SELECTED_OUTPUT</B> block.
-        @retval True            Success
-        @retval False           The given user number has not been defined.
-        @see                    GetCurrentSelectedOutputUserNumber, GetSelectedOutputColumnCount, GetSelectedOutputFileName, GetSelectedOutputRowCount, GetSelectedOutputString, GetSelectedOutputStringLine, GetSelectedOutputStringLineCount, GetSelectedOutputValue
+            The initial setting is 1.
+            @param n                The user number as specified in the <B>SELECTED_OUTPUT</B> block.
+            @retval True            Success
+            @retval False           The given user number has not been defined.
+            @see                    GetCurrentSelectedOutputUserNumber, GetSelectedOutputColumnCount, GetSelectedOutputFileName, GetSelectedOutputRowCount, GetSelectedOutputString, GetSelectedOutputStringLine, GetSelectedOutputStringLineCount, GetSelectedOutputValue
 
         """
         ...
@@ -744,24 +767,24 @@ class Phreeqc:
         """
         ...
 
-    def set_dump_file_on(self, bValue: bool) -> None:
+    def set_dump_file_on(self, b_value: bool) -> None:
         """
         Sets the dump file switch on or off.  This switch controls whether or not phreeqc writes to the <B>DUMP</B> (<B><I>dump.id.out</I></B>
         if unspecified, where id is obtained from @ref GetId) file.
-        The initial setting is false.
-        @param bValue           If true, turns on output to the <B>DUMP</B> file;
-                                                                                                        if false, turns off output to the <B>DUMP</B> file.
+        The initial setting is False.
+        @param bValue           If True, turns on output to the <B>DUMP</B> file;
+                                if False, turns off output to the <B>DUMP</B> file.
         @see                    GetDumpFileOn, GetDumpString, GetDumpStringOn, GetDumpStringLine, GetDumpStringLineCount, SetDumpStringOn
 
         """
         ...
 
-    def set_dump_string_on(self, bValue: bool) -> None:
+    def set_dump_string_on(self, b_value: bool) -> None:
         """
         Sets the dump string switch on or off.  This switch controls whether or not the data normally sent
-        to the dump file are stored in a buffer for retrieval.  The initial setting is false.
-        @param bValue           If true, captures the output defined by the <B>DUMP</B> keyword into a string buffer;
-                                                                                                        if false, output defined by the <B>DUMP</B> keyword is not captured to a string buffer.
+        to the dump file are stored in a buffer for retrieval.  The initial setting is False.
+        @param bValue           If True, captures the output defined by the <B>DUMP</B> keyword into a string buffer;
+                                if False, output defined by the <B>DUMP</B> keyword is not captured to a string buffer.
         @see                    GetDumpFileOn, GetDumpString, GetDumpStringOn, GetDumpStringLine, GetDumpStringLineCount, SetDumpFileOn
 
         """
@@ -776,33 +799,33 @@ class Phreeqc:
         """
         ...
 
-    def set_error_file_on(self, bValue: bool) -> None:
+    def set_error_file_on(self, b_value: bool) -> None:
         """
         Sets the error file switch on or off.  This switch controls whether or not
         error messages are written to the <B><I>phreeqc.id.err</I></B> (where id is obtained from @ref GetId) file.
-        The initial setting is true.
-        @param bValue           If true, writes errors to the error file; if false, no errors are written to the error file.
+        The initial setting is True.
+        @param bValue           If True, writes errors to the error file; if False, no errors are written to the error file.
         @see                    GetErrorStringLine, GetErrorStringLineCount, GetErrorFileOn, OutputErrorString
 
         """
         ...
 
-    def set_error_on(self, bValue: bool) -> None:
+    def set_error_on(self, b_value: bool) -> None:
         """
         Sets the error switch on or off.  This switch controls whether
         error messages are are generated and displayed.
-        The initial setting is true.
-        @param bValue           If true, error messages are sent to the error file and error string buffer; if false, no error messages are generated.
+        The initial setting is True.
+        @param bValue           If True, error messages are sent to the error file and error string buffer; if False, no error messages are generated.
         @see                    GetErrorOn, GetErrorStringLine, GetErrorStringLineCount, GetErrorFileOn, OutputErrorString
 
         """
         ...
 
-    def set_error_string_on(self, bValue: bool) -> None:
+    def set_error_string_on(self, b_value: bool) -> None:
         """
         Sets the error string switch on or off.  This switch controls whether or not the data normally sent
-        to the error file are stored in a buffer for retrieval.  The initial setting is true.
-        @param bValue           If true, captures error output into a string buffer; if false, error output is not captured to a string buffer.
+        to the error file are stored in a buffer for retrieval.  The initial setting is True.
+        @param bValue           If True, captures error output into a string buffer; if False, error output is not captured to a string buffer.
         @see                    GetErrorFileOn, GetErrorString, GetErrorStringOn, GetErrorStringLine, GetErrorStringLineCount, SetErrorFileOn
 
         """
@@ -817,23 +840,23 @@ class Phreeqc:
         """
         ...
 
-    def set_log_file_on(self, bValue: bool) -> None:
+    def set_log_file_on(self, b_value: bool) -> None:
         """
         Sets the log file switch on or off.  This switch controls whether or not phreeqc
-        writes log messages to the <B><I>phreeqc.id.log</I></B> (where id is obtained from @ref GetId) file.  The initial setting is false.
-        @param bValue           If true, turns on output to the log file; if false, no log messages are written to the log file.
+        writes log messages to the <B><I>phreeqc.id.log</I></B> (where id is obtained from @ref GetId) file.  The initial setting is False.
+        @param bValue           If True, turns on output to the log file; if False, no log messages are written to the log file.
         @remarks
-                        Logging must be enabled through the use of the KNOBS -logfile option in order to receive any log messages.
+            Logging must be enabled through the use of the KNOBS -logfile option in order to receive any log messages.
         @see                    GetLogFileOn
 
         """
         ...
 
-    def set_log_string_on(self, bValue: bool) -> None:
+    def set_log_string_on(self, b_value: bool) -> None:
         """
         Sets the log string switch on or off.  This switch controls whether or not the data normally sent
-        to the log file are stored in a buffer for retrieval.  The initial setting is false.
-        @param bValue           If true, captures log output into a string buffer; if false, log output is not captured to a string buffer.
+        to the log file are stored in a buffer for retrieval.  The initial setting is False.
+        @param bValue           If True, captures log output into a string buffer; if False, log output is not captured to a string buffer.
         @see                    GetLogFileOn, GetLogString, GetLogStringOn, GetLogStringLine, GetLogStringLineCount, SetLogFileOn
 
         """
@@ -848,22 +871,22 @@ class Phreeqc:
         """
         ...
 
-    def set_output_file_on(self, bValue: bool) -> None:
+    def set_output_file_on(self, b_value: bool) -> None:
         """
         Sets the output file switch on or off.  This switch controls whether or not phreeqc
         writes to the <B><I>phreeqc.id.out</I></B> file (where id is obtained from @ref GetId).  This is the output that is normally generated
-        when phreeqc is run.  The initial setting is false.
-        @param bValue           If true, writes output to the output file; if false, no output is written to the output file.
+        when phreeqc is run.  The initial setting is False.
+        @param bValue           If True, writes output to the output file; if False, no output is written to the output file.
         @see                    GetOutputFileOn
 
         """
         ...
 
-    def set_output_string_on(self, bValue: bool) -> None:
+    def set_output_string_on(self, b_value: bool) -> None:
         """
         Sets the output string switch on or off.  This switch controls whether or not the data normally sent
-        to the output file are stored in a buffer for retrieval.  The initial setting is false.
-        @param bValue           If true, captures output into a string buffer; if false, output is not captured to a string buffer.
+        to the output file are stored in a buffer for retrieval.  The initial setting is False.
+        @param bValue           If True, captures output into a string buffer; if False, output is not captured to a string buffer.
         @see                    GetOutputFileOn, GetOutputString, GetOutputStringOn, GetOutputStringLine, GetOutputStringLineCount, SetOutputFileOn
 
         """
@@ -879,24 +902,25 @@ class Phreeqc:
         """
         ...
 
-    def set_selected_output_file_on(self, bValue: bool) -> None:
+    def set_selected_output_file_on(self, b_value: bool) -> None:
         """
         Sets the selected-output file switch on or off.  This switch controls whether or not phreeqc writes output to
         the current <B>SELECTED_OUTPUT</B> (<B><I>selected_n.id.out</I></B> if unspecified, where id is obtained from @ref GetId) file.
-        The initial setting is false.
-        @param bValue           If true, writes output to the selected-output file; if false, no output is written to the selected-output file.
+        The initial setting is False.
+        @param bValue           If True, writes output to the selected-output file; if False, no output is written to the selected-output file.
         @see                    GetSelectedOutputColumnCount, GetSelectedOutputFileOn, GetSelectedOutputRowCount, GetSelectedOutputValue, SetCurrentSelectedOutputUserNumber
 
         """
         ...
 
-    def set_selected_output_string_on(self, bValue: bool) -> None:
+    def set_selected_output_string_on(self, b_value: bool) -> None:
         """
         Sets the selected output string switch on or off.  This switch controls whether or not the data normally sent
         to the current <B>SELECTED_OUTPUT</B> file (see @ref SetCurrentSelectedOutputUserNumber) are stored in a buffer for retrieval.
-        The initial setting is false.
-        @param bValue           If true, captures the output defined by the <B>SELECTED_OUTPUT</B> keyword into a string buffer;
-                                                                                                        if false, output defined by the <B>SELECTED_OUTPUT</B> keyword is not captured to a string buffer.
+        The initial setting is False.
+        @param bValue           If True, captures the output defined by the <B>SELECTED_OUTPUT</B> keyword into a string buffer;
+                                if False, output defined by the <B>SELECTED_OUTPUT</B> keyword is not captured to a string buffer.
         @see                    GetSelectedOutputFileOn, GetSelectedOutputString, GetSelectedOutputStringOn, GetSelectedOutputStringLine, GetSelectedOutputStringLineCount, SetCurrentSelectedOutputUserNumber, SetSelectedOutputFileOn
 
         """
+        ...
