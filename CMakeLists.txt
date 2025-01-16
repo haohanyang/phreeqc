@@ -9,12 +9,10 @@ include(ExternalProject)
 add_subdirectory(pybind11)
 
 ExternalProject_Add(IPhreeqcBuild
-    URL            https://water.usgs.gov/water-resources/software/PHREEQC/iphreeqc-3.7.3-15968.tar.gz
-    URL_HASH       SHA256=8ad26c75e9060949291c450119d54ed69f352223592d79bc7a5f2512c9656f74
+    GIT_REPOSITORY https://github.com/usgs-coupled/iphreeqc.git
     CMAKE_ARGS     "-DCMAKE_INSTALL_PREFIX=${CMAKE_SOURCE_DIR}/iphreeqc-install" "-DBUILD_TESTING=OFF" "-DCMAKE_BUILD_TYPE=Release" "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     INSTALL_DIR    "${CMAKE_SOURCE_DIR}/iphreeqc-install"
 )
-
 
 pybind11_add_module(_iphreeqc MODULE "${CMAKE_SOURCE_DIR}/src/main.cpp")
 
