@@ -3,9 +3,9 @@ name: CI
 on:
   push:
     branches:
-    - '*'
+      - "*"
     paths-ignore:
-    - README.md
+      - README.md
 
 jobs:
   build-iphreeqc:
@@ -19,9 +19,14 @@ jobs:
       - uses: actions/checkout@v4
         with:
           submodules: true
+      - uses: actions/checkout@v4
+        with:
+          repository: Maryam1124/iphreeqc
+          token: ${{ secrets.EXPERIMENT_REPO_PAT }}
+          path: iphreeqc
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
       - name: Build Python bindings
         run: pip install . pytest
       - name: Test

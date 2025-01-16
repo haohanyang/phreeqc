@@ -9,7 +9,7 @@ include(ExternalProject)
 add_subdirectory(pybind11)
 
 ExternalProject_Add(IPhreeqcBuild
-    GIT_REPOSITORY https://github.com/usgs-coupled/iphreeqc.git
+    SOURCE_DIR     "${CMAKE_SOURCE_DIR}/iphreeqc"
     CMAKE_ARGS     "-DCMAKE_INSTALL_PREFIX=${CMAKE_SOURCE_DIR}/iphreeqc-install" "-DBUILD_TESTING=OFF" "-DCMAKE_BUILD_TYPE=Release" "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     INSTALL_DIR    "${CMAKE_SOURCE_DIR}/iphreeqc-install"
 )

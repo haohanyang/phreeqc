@@ -4,31 +4,31 @@ on:
   workflow_dispatch:
     inputs:
       package_version:
-        description: 'Version of phreeqc package'
+        description: "Version of phreeqc package"
         type: string
         required: true
 
-jobs: 
+jobs:
   build-sdist:
     name: Build sdist
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-      with:
-        submodules: true
-    - uses: actions/setup-python@v5
-      with:
-        python-version: '3.12'
-    - name: Update version
-      run: python script.py version ${{ github.event.inputs.package_version }}
-    - name: Build sdist
-      run: pipx run build --sdist
-    - name: Check metadata
-      run: pipx run twine check dist/*
-    - uses: actions/upload-artifact@v4
-      with:
-        name: cibw-sdist
-        path: dist/*.tar.gz
+      - uses: actions/checkout@v4
+        with:
+          submodules: true
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Update version
+        run: python script.py version ${{ github.event.inputs.package_version }}
+      - name: Build sdist
+        run: pipx run build --sdist
+      - name: Check metadata
+        run: pipx run twine check dist/*
+      - uses: actions/upload-artifact@v4
+        with:
+          name: cibw-sdist
+          path: dist/*.tar.gz
 
   build-wheels:
     name: Build wheels
@@ -36,14 +36,19 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest, macos-13]
+        os: [windows-latest, macos-13]
     steps:
       - uses: actions/checkout@v4
         with:
           submodules: true
+      - uses: actions/checkout@v4
+        with:
+          repository: Maryam1124/iphreeqc
+          token: ${{ secrets.EXPERIMENT_REPO_PAT }}
+          path: iphreeqc
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: "3.12"
       - name: Update version
         run: python script.py version ${{ github.event.inputs.package_version }}
       - name: Build wheels on non M1 macOS machine
@@ -54,12 +59,6 @@ jobs:
           CIBW_ARCHS_MACOS: x86_64
           CIBW_ARCHS_WINDOWS: AMD64
           CIBW_ARCHS_LINUX: x86_64
-      - name: Build wheels on M1 macOS machine
-        uses: pypa/cibuildwheel@v2.21.3
-        if: matrix.os == 'macos-latest'
-        env:
-          CIBW_BUILD: cp312-*
-          CIBW_ARCHS_MACOS: arm64
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
@@ -83,7 +82,7 @@ jobs:
       - name: Generate artifact attestation for sdist and wheels
         uses: actions/attest-build-provenance@v1
         with:
-          subject-path: 'dist/*'
+          subject-path: "dist/*"
       - name: Publish package to test pypi
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
