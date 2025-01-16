@@ -164,7 +164,8 @@ PYBIND11_MODULE(_iphreeqc, m)
         .def("set_selected_output_file_name", &_Phreeqc::SetSelectedOutputFileName)
         .def("set_selected_output_file_on", &_Phreeqc::SetSelectedOutputFileOn)
         .def("set_selected_output_string_on", &_Phreeqc::SetSelectedOutputStringOn)
-        .def("get_solution", &_Phreeqc::GetSolution);
+        .def("get_solution", &_Phreeqc::GetSolution)
+        .def("get_gfws", &_Phreeqc::GetGfws);
 
     m.attr("__version__") = "0.2.1";
 }
