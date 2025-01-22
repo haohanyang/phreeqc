@@ -36,7 +36,7 @@ jobs:
     strategy:
       fail-fast: true
       matrix:
-        os: [windows-latest, macos-13]
+        os: [windows-latest]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -51,14 +51,11 @@ jobs:
           python-version: "3.11"
       - name: Update version
         run: python script.py version ${{ github.event.inputs.package_version }}
-      - name: Build wheels on non M1 macOS machine
+      - name: Build wheels
         uses: pypa/cibuildwheel@v2.21.3
-        if: matrix.os != 'macos-latest'
         env:
           CIBW_BUILD: cp311-*
-          CIBW_ARCHS_MACOS: x86_64
-          CIBW_ARCHS_WINDOWS: AMD64
-          CIBW_ARCHS_LINUX: x86_64
+          CIBW_ARCHS_WINDOWS: "AMD64 x86"
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
