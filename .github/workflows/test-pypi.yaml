@@ -18,7 +18,7 @@ jobs:
           submodules: true
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.11"
       - name: Update version
         run: python script.py version ${{ github.event.inputs.package_version }}
       - name: Build sdist
@@ -48,14 +48,14 @@ jobs:
           path: iphreeqc
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
+          python-version: "3.11"
       - name: Update version
         run: python script.py version ${{ github.event.inputs.package_version }}
       - name: Build wheels on non M1 macOS machine
         uses: pypa/cibuildwheel@v2.21.3
         if: matrix.os != 'macos-latest'
         env:
-          CIBW_BUILD: cp312-*
+          CIBW_BUILD: cp311-*
           CIBW_ARCHS_MACOS: x86_64
           CIBW_ARCHS_WINDOWS: AMD64
           CIBW_ARCHS_LINUX: x86_64
