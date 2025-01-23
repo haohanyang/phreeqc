@@ -48,14 +48,14 @@ jobs:
           path: iphreeqc
       - uses: actions/setup-python@v5
         with:
-          python-version: "3.11"
+          python-version: "3.9"
       - name: Update version
         run: python script.py version ${{ github.event.inputs.package_version }}
       - name: Build wheels
         uses: pypa/cibuildwheel@v2.21.3
         env:
-          CIBW_BUILD: cp311-*
-          CIBW_ARCHS_WINDOWS: "AMD64 x86"
+          CIBW_BUILD: cp39-*
+          CIBW_ARCHS_WINDOWS: AMD64
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
