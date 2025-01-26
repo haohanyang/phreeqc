@@ -1,12 +1,22 @@
 cmake_minimum_required(VERSION 3.20)
 
-project(phreeqc)
+project(phreeqc C CXX)
+
+include(FetchContent)
 
 set(CMAKE_CXX_STANDARD 11)
 
 include(ExternalProject)
 
-add_subdirectory(pybind11)
+FetchContent_Declare(
+    pybind
+    GIT_REPOSITORY https://github.com/pybind/pybind11.git
+    GIT_TAG        v2.13.6
+)
+
+FetchContent_MakeAvailable(pybind)
+
+add_subdirectory(${pybind_SOURCE_DIR})
 
 ExternalProject_Add(IPhreeqcBuild
     URL            https://water.usgs.gov/water-resources/software/PHREEQC/iphreeqc-3.7.3-15968.tar.gz
