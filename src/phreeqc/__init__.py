@@ -24,5 +24,12 @@ class Phreeqc(_Phreeqc):
                     )
         return selected_output
 
+    def get_components(self):
+        components = []
+        for i in range(self.get_component_count()):
+            components.append(self.get_component(i))
+        
+        return components
+
 
 __all__ = ["__doc__", "Phreeqc", "__version__"]

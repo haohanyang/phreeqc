@@ -78,6 +78,13 @@ class Phreeqc:
         """
         ...
 
+    def get_components(self) -> List[int]:
+        """
+        Retrieves the current list of components.
+        @return                 The current array of components.
+        """
+        ...
+
     def get_current_selected_output_user_number(self) -> int:
         """
         Retrieves the current <B>SELECTED_OUTPUT</B> user number.  The initial setting is 1.
