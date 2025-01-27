@@ -192,3 +192,5 @@ cython_debug/
 
 iphreeqc-build/
 iphreeqc-install/
+
+pybind11/
