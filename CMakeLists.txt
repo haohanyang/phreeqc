@@ -20,8 +20,7 @@ FetchContent_MakeAvailable(pybind)
 add_subdirectory(${pybind_SOURCE_DIR})
 
 ExternalProject_Add(IPhreeqcBuild
-    URL            https://water.usgs.gov/water-resources/software/PHREEQC/iphreeqc-3.7.3-15968.tar.gz
-    URL_HASH       SHA256=8ad26c75e9060949291c450119d54ed69f352223592d79bc7a5f2512c9656f74
+    URL            https://water.usgs.gov/water-resources/software/PHREEQC/iphreeqc-3.8.6-17100.tar.gz
     CMAKE_ARGS     "-DCMAKE_INSTALL_PREFIX=${CMAKE_SOURCE_DIR}/iphreeqc-install" "-DBUILD_TESTING=OFF" "-DCMAKE_BUILD_TYPE=Release" "-DCMAKE_POSITION_INDEPENDENT_CODE=ON"
     INSTALL_DIR    "${CMAKE_SOURCE_DIR}/iphreeqc-install"
 )
