@@ -26,7 +26,7 @@ ExternalProject_Add(IPhreeqcBuild
 )
 
 
-pybind11_add_module(_iphreeqc MODULE "${CMAKE_SOURCE_DIR}/src/main.cpp")
+pybind11_add_module(_iphreeqc MODULE "${CMAKE_SOURCE_DIR}/src/bindings.cc")
 
 add_dependencies(_iphreeqc IPhreeqcBuild)
 
