@@ -49,4 +49,4 @@ jobs:
         run: cmake --build ${{github.workspace}}/build --config Release
 
       - name: Test bindings
-        run: python test.py
+        run: python test_bin.py
