@@ -3,10 +3,13 @@
 Python bindings of [IPHREEQC](https://www.usgs.gov/software/phreeqc-version-3)
 
 ## Install
+
 ```
 pip install phreeqc
 ```
+
 ## Use
+
 ```py
 from phreeqc import Phreeqc
 
@@ -22,7 +25,7 @@ TITLE Example 2.--Temperature dependence of solubility
                   of gypsum and anhydrite
 SOLUTION 1 Pure water
         pH      7.0
-        temp    25.0                
+        temp    25.0
 EQUILIBRIUM_PHASES 1
         Gypsum          0.0     1.0
         Anhydrite       0.0     1.0
@@ -55,10 +58,46 @@ selected_output = p.get_selected_output()
 print(selected_output)
 
 ```
+
+## Build
+
+- Install [Conan Package Manager](https://conan.io/)
+- Clone the [conan-center-index](https://github.com/haohanyang/conan-center-index.git) which contains recipe for iphreeqc/3.8.6(the version on official website)
+
+  ```
+  git clone --sparse --depth 1 https://github.com/haohanyang/conan-center-index.git
+  ```
+
+- Build package iphreeqc/3.8.6
+
+  ```
+  cd conan-center-index
+  git sparse-checkout set recipes/iphreeqc
+  cd recipes/iphreeqc
+  conan create all/conanfile.py --version=3.8.6 -s build_type=<build-type>
+  ```
+
+- Bootstrap toolchain
+
+  ```
+  conan install . --build=missing -s build_type=<build-type> -c tools.cmake.cmaketoolchain:generator=Ninja
+  ```
+
+- Build
+
+  ```
+  cmake --build build --config <build-type>
+  ```
+
 ## License
+
 This project provides Python bindings for the iphreeqc software. The bindings are distributed under the [MIT License](/LICENSE), which applies to the Python and C++ binding code in this repository.
 
 However, please note:
 
 IPHREEQC, the underlying software to which these bindings provide access, is made available by the U.S. Geological Survey (USGS) under the terms described in its [User Rights Notice](/NOTICE). You can also find the full text of the license in the iphreeqc source or documentation.
 By using this project, you agree to comply with the terms outlined in the iphreeqc license as well as the MIT license for the Python bindings.
+
+```
+
+```
