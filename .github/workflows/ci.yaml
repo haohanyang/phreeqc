@@ -21,7 +21,7 @@ jobs:
       - name: Add iphreeqc conan recipe
         uses: actions/checkout@v6
         with:
-          repository: https://github.com/haohanyang/conan-center-index.git
+          repository: haohanyang/conan-center-index
           path: conan-center-index
           sparse-checkout: recipes/iphreeqc
 
