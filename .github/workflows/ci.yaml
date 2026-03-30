@@ -40,7 +40,7 @@ jobs:
         working-directory: conan-center-index/recipes/iphreeqc
 
       - name: Bootstrap conan toolchain
-        run: conan install . --build=missing -s build_type=Release
+        run: conan install . --build=missing -s build_type=Release -c tools.cmake.cmaketoolchain:generator=Ninja
 
       - name: Configure CMake
         run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/build/Release/generators/conan_toolchain.cmake
