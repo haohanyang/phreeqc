@@ -18,29 +18,10 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Add iphreeqc conan recipe
-        uses: actions/checkout@v6
+      - name: Setup dependencies
+        uses: ./.github/actions/setup-deps
         with:
-          repository: haohanyang/conan-center-index
-          path: conan-center-index
-          sparse-checkout: recipes/iphreeqc
-
-      - name: Setup Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-
-      - name: Install Conan
-        uses: conan-io/setup-conan@v1
-        with:
-          cache_packages: true
-
-      - name: Create conan package iphreeqc/3.8.6
-        run: conan create all/conanfile.py --version=3.8.6 -s build_type=Release
-        working-directory: conan-center-index/recipes/iphreeqc
-
-      - name: Bootstrap conan toolchain
-        run: conan install . --build=missing -s build_type=Release -c tools.cmake.cmaketoolchain:generator=Ninja
+          build-type: Release
 
       - name: Configure CMake
         run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/build/Release/generators/conan_toolchain.cmake

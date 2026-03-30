@@ -1,0 +1,35 @@
+﻿name: setup-deps
+description: Setup Conan 2, Python and iphreeqc C++ library
+
+inputs:
+  build-type:
+    description: Build type for Conan (Release or Debug)
+    required: false
+    default: Release
+
+runs:
+  using: composite
+  steps:
+    - name: Setup Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.12
+
+    - name: Setup Conan
+      uses: conan-io/setup-conan@v1
+
+    - name: Add iphreeqc conan recipe
+      uses: actions/checkout@v6
+      with:
+        repository: haohanyang/conan-center-index
+        path: conan-center-index
+        sparse-checkout: recipes/iphreeqc
+
+    - name: Create conan package iphreeqc/3.8.6
+      run: conan create all/conanfile.py --version=3.8.6 -s build_type=${{ inputs.build-type }}
+      working-directory: conan-center-index/recipes/iphreeqc
+      shell: bash
+
+    - name: Bootstrap conan toolchain
+      run: conan install . --build=missing -s build_type=${{ inputs.build-type }} -c tools.cmake.cmaketoolchain:generator=Ninja
+      shell: bash
