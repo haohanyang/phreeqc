@@ -83,7 +83,7 @@ public:
     }
 };
 
-PYBIND11_MODULE(_iphreeqc, m)
+PYBIND11_MODULE(phreeqc, m)
 {
 
     m.doc() = "Python bindings for PHREEQC Version 3";

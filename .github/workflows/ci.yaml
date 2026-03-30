@@ -3,12 +3,12 @@ name: CI
 on:
   push:
     branches:
-    - '*'
+      - master
     paths-ignore:
-    - README.md
+      - README.md
 
 jobs:
-  build-iphreeqc:
+  build:
     name: Build IPhreeqc Python bindings
     strategy:
       fail-fast: true
@@ -16,13 +16,37 @@ jobs:
         os: [macos-latest, windows-latest, ubuntu-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+
+      - name: Add iphreeqc conan recipe
+        uses: actions/checkout@v6
         with:
-          submodules: true
-      - uses: actions/setup-python@v5
+          repository: https://github.com/haohanyang/conan-center-index.git
+          path: conan-center-index
+          sparse-checkout: recipes/iphreeqc
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
-      - name: Build Python bindings
-        run: pip install . pytest
-      - name: Test
-        run: pytest tests
+          python-version: "3.12"
+
+      - name: Install Conan
+        uses: conan-io/setup-conan@v1
+        with:
+          cache_packages: true
+
+      - name: Create conan package iphreeqc/3.8.6
+        run: conan create all/conanfile.py --version=3.8.6 -s build_type=Release
+        working-directory: recipes/iphreeqc
+
+      - name: Bootstrap conan toolchain
+        run: conan install . --build=missing -s build_type=Release
+
+      - name: Configure CMake
+        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/build/Release/generators/conan_toolchain.cmake
+
+      - name: Build phreeqc bindings
+        run: cmake --build ${{github.workspace}}/build --config Release
+
+      - name: Test bindings
+        run: python test.py
