@@ -33,7 +33,7 @@ jobs:
           path: wheelhouse/*.whl
 
   build-windows:
-    name: Build wheel on Windows
+    name: Build wheel on x64 Windows and Linux
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
@@ -43,21 +43,28 @@ jobs:
         with:
           build-type: Release
 
-      - name: Build wheels
+      - name: Build Windows wheels
         uses: pypa/cibuildwheel@v3.4.0
         env:
           CIBW_PLATFORM: windows
           CIBW_ARCHS: AMD64
           CIBW_BUILD: cp312-*
 
+      - name: Build Linux wheels
+        uses: pypa/cibuildwheel@v3.4.0
+        env:
+          CIBW_PLATFORM: linux
+          CIBW_ARCHS: x86_64
+          CIBW_BUILD: cp312-*
+
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-${{ runner.os }}-${{ runner.arch }}
+          name: cibw-wheels-${{ runner.os }}-linux-${{ runner.arch }}
           path: wheelhouse/*.whl
 
   build-macos:
-    name: Build wheel on macOS
+    name: Build wheel on ARM macOS and Linux
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v6
@@ -67,15 +74,22 @@ jobs:
         with:
           build-type: Release
 
-      - name: Build wheels
+      - name: Build macOS wheels
         uses: pypa/cibuildwheel@v3.4.0
         env:
           CIBW_PLATFORM: macos
           CIBW_ARCHS: arm64
           CIBW_BUILD: cp312-*
 
+      - name: Build Linux wheels
+        uses: pypa/cibuildwheel@v3.4.0
+        env:
+          CIBW_PLATFORM: linux
+          CIBW_ARCHS: aarch64
+          CIBW_BUILD: cp312-*
+
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-${{ runner.os }}-${{ runner.arch }}
+          name: cibw-wheels-${{ runner.os }}-linux-${{ runner.arch }}
           path: wheelhouse/*.whl

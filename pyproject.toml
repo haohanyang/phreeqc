@@ -54,6 +54,9 @@ build-frontend = "build"
 test-command = "pytest {project}/tests"
 test-extras = ["test"]
 
+[tool.cibuildwheel.linux]
+before-all = "bash prepare.sh"
+
 [tool.cibuildwheel.pyodide]
 build-frontend = {name = "build", args = ["--exports", "whole_archive"]}
 
