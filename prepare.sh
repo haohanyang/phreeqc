@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-pip install conan cmake ninja
+pip install conan
 conan profile detect --force
 
 # 1. Clone with sparse initialization

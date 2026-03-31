@@ -14,10 +14,10 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
-      - name: Setup dependencies
-        uses: ./.github/actions/setup-deps
+      - name: Setup Python
+        uses: actions/setup-python@v5
         with:
-          build-type: Release
+          python-version: 3.12
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.4.0
@@ -32,50 +32,50 @@ jobs:
           name: cibw-wheels-${{ runner.os }}-${{ runner.arch }}
           path: wheelhouse/*.whl
 
-  build-windows:
-    name: Build wheel on Windows
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v6
+  # build-windows:
+  #   name: Build wheel on Windows
+  #   runs-on: windows-latest
+  #   steps:
+  #     - uses: actions/checkout@v6
 
-      - name: Setup dependencies
-        uses: ./.github/actions/setup-deps
-        with:
-          build-type: Release
+  #     - name: Setup dependencies
+  #       uses: ./.github/actions/setup-deps
+  #       with:
+  #         build-type: Release
 
-      - name: Build wheels
-        uses: pypa/cibuildwheel@v3.4.0
-        env:
-          CIBW_PLATFORM: windows
-          CIBW_ARCHS: AMD64
-          CIBW_BUILD: cp312-*
+  #     - name: Build wheels
+  #       uses: pypa/cibuildwheel@v3.4.0
+  #       env:
+  #         CIBW_PLATFORM: windows
+  #         CIBW_ARCHS: AMD64
+  #         CIBW_BUILD: cp312-*
 
-      - name: Upload wheels
-        uses: actions/upload-artifact@v4
-        with:
-          name: cibw-wheels-${{ runner.os }}-${{ runner.arch }}
-          path: wheelhouse/*.whl
+  #     - name: Upload wheels
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: cibw-wheels-${{ runner.os }}-${{ runner.arch }}
+  #         path: wheelhouse/*.whl
 
-  build-macos:
-    name: Build wheel on macOS
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v6
+  # build-macos:
+  #   name: Build wheel on macOS
+  #   runs-on: macos-latest
+  #   steps:
+  #     - uses: actions/checkout@v6
 
-      - name: Setup dependencies
-        uses: ./.github/actions/setup-deps
-        with:
-          build-type: Release
+  #     - name: Setup dependencies
+  #       uses: ./.github/actions/setup-deps
+  #       with:
+  #         build-type: Release
 
-      - name: Build wheels
-        uses: pypa/cibuildwheel@v3.4.0
-        env:
-          CIBW_PLATFORM: macos
-          CIBW_ARCHS: arm64
-          CIBW_BUILD: cp312-*
+  #     - name: Build wheels
+  #       uses: pypa/cibuildwheel@v3.4.0
+  #       env:
+  #         CIBW_PLATFORM: macos
+  #         CIBW_ARCHS: arm64
+  #         CIBW_BUILD: cp312-*
 
-      - name: Upload wheels
-        uses: actions/upload-artifact@v4
-        with:
-          name: cibw-wheels-${{ runner.os }}-${{ runner.arch }}
-          path: wheelhouse/*.whl
+  #     - name: Upload wheels
+  #       uses: actions/upload-artifact@v4
+  #       with:
+  #         name: cibw-wheels-${{ runner.os }}-${{ runner.arch }}
+  #         path: wheelhouse/*.whl
