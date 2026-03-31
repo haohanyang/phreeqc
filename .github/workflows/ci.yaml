@@ -47,7 +47,7 @@ jobs:
         uses: pypa/cibuildwheel@v3.4.0
         env:
           CIBW_PLATFORM: windows
-          CIBW_ARCHS: x86_64
+          CIBW_ARCHS: AMD64
           CIBW_BUILD: cp312-*
 
       - name: Upload wheels
