@@ -29,7 +29,7 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-${{ matrix.os }}
+          name: cibw-wheels-${{ runner.os }}-${{ runner.arch }}
           path: wheelhouse/*.whl
 
   build-windows:
@@ -53,7 +53,7 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-${{ matrix.os }}
+          name: cibw-wheels-${{ runner.os }}-${{ runner.arch }}
           path: wheelhouse/*.whl
 
   build-macos:
@@ -77,5 +77,5 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-${{ matrix.os }}
+          name: cibw-wheels-${{ runner.os }}-${{ runner.arch }}
           path: wheelhouse/*.whl
