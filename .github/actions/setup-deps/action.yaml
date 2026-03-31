@@ -31,5 +31,5 @@ runs:
       shell: bash
 
     - name: Bootstrap conan toolchain
-      run: conan install . --build=missing -s build_type=${{ inputs.build-type }} -c tools.cmake.cmaketoolchain:generator=Ninja
+      run: conan install . --build=missing -s build_type=${{ inputs.build-type }} -c tools.cmake.cmaketoolchain:generator=Ninja -s compiler.cppstd=17
       shell: bash
