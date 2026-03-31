@@ -196,3 +196,5 @@ iphreeqc-install/
 pybind11/
 
 CMakeUserPresets.json
+
+wheelhouse/

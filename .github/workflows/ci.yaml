@@ -8,13 +8,9 @@ on:
       - README.md
 
 jobs:
-  build:
-    name: Build IPhreeqc Python bindings
-    strategy:
-      fail-fast: true
-      matrix:
-        os: [macos-latest, windows-latest, ubuntu-latest]
-    runs-on: ${{ matrix.os }}
+  build-linux:
+    name: Build wheel on Linux
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
 
@@ -23,11 +19,63 @@ jobs:
         with:
           build-type: Release
 
-      - name: Configure CMake
-        run: cmake -B ${{github.workspace}}/build -DCMAKE_BUILD_TYPE=Release -DCMAKE_TOOLCHAIN_FILE=${{github.workspace}}/build/Release/generators/conan_toolchain.cmake
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v3.4.0
+        env:
+          CIBW_PLATFORM: linux
+          CIBW_ARCHS: x86_64
+          CIBW_BUILD: cp312-*
 
-      - name: Build phreeqc bindings
-        run: cmake --build ${{github.workspace}}/build --config Release
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: cibw-wheels-${{ matrix.os }}
+          path: wheelhouse/*.whl
 
-      - name: Test bindings
-        run: python test_bin.py
+  build-windows:
+    name: Build wheel on Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup dependencies
+        uses: ./.github/actions/setup-deps
+        with:
+          build-type: Release
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v3.4.0
+        env:
+          CIBW_PLATFORM: windows
+          CIBW_ARCHS: x86_64
+          CIBW_BUILD: cp312-*
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: cibw-wheels-${{ matrix.os }}
+          path: wheelhouse/*.whl
+
+  build-macos:
+    name: Build wheel on macOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup dependencies
+        uses: ./.github/actions/setup-deps
+        with:
+          build-type: Release
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v3.4.0
+        env:
+          CIBW_PLATFORM: macos
+          CIBW_ARCHS: arm64
+          CIBW_BUILD: cp312-*
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: cibw-wheels-${{ matrix.os }}
+          path: wheelhouse/*.whl

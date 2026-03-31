@@ -1,5 +1,5 @@
 from __future__ import annotations
-from ._iphreeqc import _Phreeqc
+from ._phreeqc import _Phreeqc
 
 
 class Phreeqc(_Phreeqc):
@@ -28,7 +28,7 @@ class Phreeqc(_Phreeqc):
         components = []
         for i in range(self.get_component_count()):
             components.append(self.get_component(i))
-        
+
         return components
 
 

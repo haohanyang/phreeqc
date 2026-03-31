@@ -1,5 +1,5 @@
 [build-system]
-requires = ["scikit-build-core>=0.10", "pybind11"]
+requires = ["scikit-build-core>=0.12", "pybind11", "cmake>=3.20", "ninja"]
 build-backend = "scikit_build_core.build"
 
 
@@ -32,12 +32,11 @@ Issues = "https://github.com/haohanyang/phreeqc/issues"
 [project.optional-dependencies]
 test = ["pytest"]
 
-
 [tool.scikit-build]
-cmake.args = ["-DBUILD_TESTING=OFF", "-DBUILD_SHARED_LIBS=ON"]
+build-dir = "build/{wheel_tag}"
+cmake.args = ["-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake"]
 wheel.expand-macos-universal-tags = true
 minimum-version = "build-system.requires"
-
 
 [tool.pytest.ini_options]
 minversion = "8.0"
@@ -49,7 +48,6 @@ filterwarnings = [
   "ignore::pytest.PytestCacheWarning",
 ]
 testpaths = ["tests"]
-
 
 [tool.cibuildwheel]
 build-frontend = "build"
