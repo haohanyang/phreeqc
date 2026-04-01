@@ -1,4 +1,7 @@
+import os.path
 from phreeqc import Phreeqc
+
+assert os.path.exists("tests/phreeqc.dat")
 
 
 def test_ex2():
