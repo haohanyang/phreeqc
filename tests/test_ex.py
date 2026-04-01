@@ -9,8 +9,8 @@ def test_ex2(request):
     assert db_path.exists()
 
     p = Phreeqc()
-    p.load_database("tests/phreeqc.dat")
-    p.run_string(
+    load_db_res = p.load_database(str(db_path))
+    run_str_res = p.run_string(
         """
 TITLE Example 2.--Temperature dependence of solubility
                   of gypsum and anhydrite
