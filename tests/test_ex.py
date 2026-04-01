@@ -1,11 +1,13 @@
-import os.path
+from pathlib import Path
 from phreeqc import Phreeqc
 
-assert os.path.exists("tests/phreeqc.dat")
 
-
-def test_ex2():
+def test_ex2(request):
     # https://water.usgs.gov/water-resources/software/PHREEQC/documentation/phreeqc3-html/phreeqc3-64.htm#50593807_28577
+
+    db_path = Path(request.fspath).parent / "phreeqc.dat"
+    assert db_path.exists()
+
     p = Phreeqc()
     p.load_database("tests/phreeqc.dat")
     p.run_string(
