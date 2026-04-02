@@ -425,5 +425,5 @@ PYBIND11_MODULE(_phreeqc, m)
         .def_static("GetVersionString", &IPhreeqc::GetVersionString, "Retrieve the IPhreeqc version string in the form X.X.X-XXXX.\n\n"
                                                                      ":returns: The version string.");
 
-    m.attr("__version__") = "0.2.1";
+    m.attr("__version__") = "1.0.0";
 }

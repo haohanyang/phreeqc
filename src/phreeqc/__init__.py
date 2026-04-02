@@ -1,10 +1,10 @@
 from __future__ import annotations
 from typing import Union
 
-from ._phreeqc import _Phreeqc
+from ._phreeqc import _Phreeqc as PhreeqcBase
 
 
-class Phreeqc(_Phreeqc):
+class Phreeqc(PhreeqcBase):
     """Python interface to IPhreeqc -- PHREEQC Version 3.
 
     Provides an interface to PHREEQC: A Computer Program for Speciation,

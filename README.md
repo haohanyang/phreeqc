@@ -14,12 +14,9 @@ pip install phreeqc
 from phreeqc import Phreeqc
 
 p = Phreeqc()
-error_count = p.load_database("phreeqc.dat")
+p.LoadDatabase("phreeqc.dat")
 
-if error_count != 0:
-    raise RuntimeError("Failed to load database")
-
-error_count = p.run_string(
+error_count = p.RunString(
     """
 TITLE Example 2.--Temperature dependence of solubility
                   of gypsum and anhydrite
@@ -50,10 +47,7 @@ END
 """
 )
 
-if error_count != 0:
-    raise RuntimeError("Failed to run string")
-
-selected_output = p.get_selected_output()
+selected_output = p.GetSelectedOutput()
 
 print(selected_output)
 
@@ -97,7 +91,3 @@ However, please note:
 
 IPHREEQC, the underlying software to which these bindings provide access, is made available by the U.S. Geological Survey (USGS) under the terms described in its [User Rights Notice](/NOTICE). You can also find the full text of the license in the iphreeqc source or documentation.
 By using this project, you agree to comply with the terms outlined in the iphreeqc license as well as the MIT license for the Python bindings.
-
-```
-
-```
