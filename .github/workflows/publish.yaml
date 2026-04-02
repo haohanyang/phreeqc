@@ -101,7 +101,7 @@ jobs:
           name: cibw-wheels-${{ runner.os }}-${{ runner.arch }}
           path: wheelhouse/*.whl
 
-  build-windows-AMD64-wheels:
+  build-windows-amd64-wheels:
     name: Build wheel on X64 Windows
     runs-on: windows-latest
     steps:
@@ -191,7 +191,13 @@ jobs:
     name: Publish wheels to pypi
     runs-on: ubuntu-latest
     needs:
-      [build-macos-wheels, build-linux-wheels, build-linux-wheels, build-sdist]
+      [
+        build-linux-x86_64-wheels,
+        build-linux-aarch64-wheels,
+        build-windows-amd64-wheels,
+        build-macos-x86_64-wheels,
+        build-macos-x86_64-wheels,
+      ]
     permissions:
       id-token: write
       attestations: write
