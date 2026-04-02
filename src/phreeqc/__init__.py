@@ -1,35 +1,63 @@
 from __future__ import annotations
+from typing import Union
+
 from ._phreeqc import _Phreeqc
 
 
 class Phreeqc(_Phreeqc):
-    def get_selected_output_value(self, row, col):
-        res = super()._get_selected_output_value(row, col)
-        return res[res[0] + 1]
+    """Python interface to IPhreeqc -- PHREEQC Version 3.
 
-    def get_selected_output(self):
-        col_count = super().get_selected_output_column_count()
-        row_count = super().get_selected_output_row_count()
+    Provides an interface to PHREEQC: A Computer Program for Speciation,
+    Batch-Reaction, One-Dimensional Transport, and Inverse Geochemical Calculations.
 
-        selected_output = {}
+    Example::
 
-        for i in range(col_count):
-            for j in range(row_count):
-                if j == 0:
-                    col_name = self.get_selected_output_value(j, i)
-                    selected_output[col_name] = []
-                else:
-                    selected_output[col_name].append(
-                        self.get_selected_output_value(j, i)
-                    )
-        return selected_output
+        phreeqc = Phreeqc()
+        phreeqc.LoadDatabase("phreeqc.dat")
+        phreeqc.RunString('''
+            SOLUTION 1
+                pH 7.0
+                temp 25.0
+            SELECTED_OUTPUT
+                -reset false
+                -pH
+            END
+        ''')
+        data = phreeqc.GetSelectedOutput()
+        # data == {"pH": [7.0]}
+    """
 
-    def get_components(self):
-        components = []
-        for i in range(self.get_component_count()):
-            components.append(self.get_component(i))
+    def GetSelectedOutput(self) -> dict[str, list[Union[int, float, str]]]:
+        """Return the current SELECTED_OUTPUT data as a column-oriented dictionary.
 
-        return components
+        Row 0 of the selected output contains column headings; subsequent rows
+        contain the numeric or string data. This method reads all rows and
+        organises the values by column name.
+
+        :returns: A dict mapping column names to lists of values, e.g.
+                  ``{"pH": [7.0, 6.8], "Ca(mol/kgw)": [1e-3, 2e-3]}``.
+        :see: SetCurrentSelectedOutputUserNumber, GetSelectedOutputColumnCount,
+              GetSelectedOutputRowCount
+        """
+        col_count = self.GetSelectedOutputColumnCount()
+        row_count = self.GetSelectedOutputRowCount()
+        result: dict[str, list] = {}
+        for col in range(col_count):
+            col_name = str(self.GetSelectedOutputValue(0, col))
+            result[col_name] = [
+                self.GetSelectedOutputValue(row, col) for row in range(1, row_count)
+            ]
+        return result
+
+    def GetComponents(self) -> list[str]:
+        """Return all components as a list of strings.
+
+        Convenience wrapper around GetComponent / GetComponentCount.
+
+        :returns: A list of component name strings.
+        :see: GetComponent, GetComponentCount, ListComponents
+        """
+        return [self.GetComponent(i) for i in range(self.GetComponentCount())]
 
 
 __all__ = ["__doc__", "Phreeqc", "__version__"]

@@ -9,8 +9,8 @@ def test_ex2(request):
     assert db_path.exists()
 
     p = Phreeqc()
-    load_db_res = p.load_database(str(db_path))
-    run_str_res = p.run_string(
+    p.LoadDatabase(str(db_path))
+    p.RunString(
         """
 TITLE Example 2.--Temperature dependence of solubility
                   of gypsum and anhydrite
@@ -67,5 +67,5 @@ END
 """
     )
 
-    selected_output = p.get_selected_output()
+    selected_output = p.GetSelectedOutput()
     assert len(selected_output["si_anhydrite"]) == 104
