@@ -43,8 +43,8 @@ jobs:
           name: cibw-sdist
           path: dist/*.tar.gz
 
-  build-linux-wheels:
-    name: Build wheels on Linux
+  build-linux-x86_64-wheels:
+    name: Build wheels on x64 Linux
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
@@ -69,11 +69,40 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-${{ runner.os }}
+          name: cibw-wheels-${{ runner.os }}-${{ runner.arch }}
           path: wheelhouse/*.whl
 
-  build-windows-wheels:
-    name: Build wheel on Windows
+  build-linux-aarch64-wheels:
+    name: Build wheels on arm64 Linux
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: 3.12
+
+      - name: Update version
+        if: ${{ github.event.inputs.version != '' }}
+        uses: ./.github/actions/update-version
+        with:
+          version: ${{ github.event.inputs.version }}
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v3.4.0
+        env:
+          CIBW_PLATFORM: linux
+          CIBW_ARCHS: aarch64
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: cibw-wheels-${{ runner.os }}-${{ runner.arch }}
+          path: wheelhouse/*.whl
+
+  build-windows-AMD64-wheels:
+    name: Build wheel on X64 Windows
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
@@ -98,11 +127,11 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-${{ runner.os }}
+          name: cibw-wheels-${{ runner.os }}-${{ runner.arch }}
           path: wheelhouse/*.whl
 
-  build-macos-wheels:
-    name: Build wheel on macOS
+  build-macos-arm64-wheels:
+    name: Build wheel on arm64 macOS
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v6
@@ -127,9 +156,37 @@ jobs:
       - name: Upload wheels
         uses: actions/upload-artifact@v4
         with:
-          name: cibw-wheels-${{ runner.os }}
+          name: cibw-wheels-${{ runner.os }}-${{ runner.arch }}
           path: wheelhouse/*.whl
 
+  build-macos-x86_64-wheels:
+    name: Build wheel on Intel macOS
+    runs-on: macos-26-intel
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Setup dependencies
+        uses: ./.github/actions/setup-deps
+        with:
+          build-type: Release
+
+      - name: Update version
+        if: ${{ github.event.inputs.version != '' }}
+        uses: ./.github/actions/update-version
+        with:
+          version: ${{ github.event.inputs.version }}
+
+      - name: Build wheels
+        uses: pypa/cibuildwheel@v3.4.0
+        env:
+          CIBW_PLATFORM: macos
+          CIBW_ARCHS: x86_64
+
+      - name: Upload wheels
+        uses: actions/upload-artifact@v4
+        with:
+          name: cibw-wheels-${{ runner.os }}-${{ runner.arch }}
+          path: wheelhouse/*.whl
   publish:
     name: Publish wheels to pypi
     runs-on: ubuntu-latest
