@@ -20,29 +20,6 @@ env:
   CIBW_BUILD: ${{ github.event.inputs.repository == 'Test PyPI' && 'cp312-*' || '' }}
 
 jobs:
-  build-sdist:
-    name: Build sdist
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-
-      - name: Update version
-        if: ${{ github.event.inputs.version != '' }}
-        uses: ./.github/actions/update-version
-        with:
-          version: ${{ github.event.inputs.version }}
-
-      - name: Build sdist
-        run: pipx run build --sdist
-
-      - name: Check metadata
-        run: pipx run twine check dist/*
-
-      - uses: actions/upload-artifact@v4
-        with:
-          name: cibw-sdist
-          path: dist/*.tar.gz
-
   build-linux-x86_64-wheels:
     name: Build wheels on x64 Linux
     runs-on: ubuntu-latest
@@ -60,11 +37,23 @@ jobs:
         with:
           version: ${{ github.event.inputs.version }}
 
+      - name: Build sdist
+        run: pipx run build --sdist
+
+      - name: Check metadata
+        run: pipx run twine check dist/*
+
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.4.0
         env:
           CIBW_PLATFORM: linux
           CIBW_ARCHS: x86_64
+          
+      - name: Upload sdist
+        uses: actions/upload-artifact@v4
+        with:
+          name: cibw-sdist
+          path: dist/*.tar.gz
 
       - name: Upload wheels
         uses: actions/upload-artifact@v4
@@ -74,7 +63,7 @@ jobs:
 
   build-linux-aarch64-wheels:
     name: Build wheels on arm64 Linux
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v6
 
