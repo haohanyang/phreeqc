@@ -33,14 +33,12 @@ static py::object var_to_py(const VAR &var)
     }
 }
 
-PYBIND11_MODULE(_phreeqc, m)
+PYBIND11_MODULE(_phreeqc, m, py::mod_gil_not_used())
 {
     m.doc() =
         "Python bindings for IPhreeqc 3.8.6.\n\n"
         "Provides an interface to PHREEQC: A Computer Program for Speciation, "
         "Batch-Reaction, One-Dimensional Transport, and Inverse Geochemical Calculations.";
-
-    m.attr("__free_threaded_and_gil_safe__") = py::bool_(true);
 
     py::class_<IPhreeqc>(m, "_Phreeqc")
         .def(py::init<>())
