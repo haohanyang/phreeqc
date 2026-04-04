@@ -1,6 +1,6 @@
 # PHREEQC
 
-Python bindings of [IPHREEQC](https://www.usgs.gov/software/phreeqc-version-3)
+Python bindings of [IPHREEQC 3.8.6](https://www.usgs.gov/software/phreeqc-version-3)
 
 ## Install
 
@@ -16,7 +16,7 @@ from phreeqc import Phreeqc
 p = Phreeqc()
 p.LoadDatabase("phreeqc.dat")
 
-error_count = p.RunString(
+p.RunString(
     """
 TITLE Example 2.--Temperature dependence of solubility
                   of gypsum and anhydrite

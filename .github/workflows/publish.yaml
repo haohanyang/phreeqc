@@ -102,7 +102,7 @@ jobs:
           path: wheelhouse/*.whl
 
   build-windows-amd64-wheels:
-    name: Build wheel on X64 Windows
+    name: Build wheel on x64 Windows
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v6
