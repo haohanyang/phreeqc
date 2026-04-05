@@ -34,7 +34,7 @@ test = ["pytest"]
 
 [tool.scikit-build]
 build-dir = "build/{wheel_tag}"
-cmake.args = ["-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake", "-GNinja"]
+cmake.args = ["-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake"]
 wheel.expand-macos-universal-tags = true
 minimum-version = "build-system.requires"
 
