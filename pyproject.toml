@@ -34,7 +34,7 @@ test = ["pytest"]
 
 [tool.scikit-build]
 build-dir = "build/{wheel_tag}"
-cmake.args = ["-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake"]
+cmake.args = ["-DCMAKE_BUILD_TYPE=Release", "-DCMAKE_TOOLCHAIN_FILE=build/Release/generators/conan_toolchain.cmake", "-GNinja"]
 wheel.expand-macos-universal-tags = true
 minimum-version = "build-system.requires"
 
@@ -53,6 +53,9 @@ testpaths = ["tests"]
 build-frontend = "build"
 test-command = "pytest {project}/tests"
 test-extras = ["test"]
+# Free-threaded Python 3.14 not yet supported: pybind11 looks for python314.lib
+# but free-threaded builds on Windows use python314t.lib
+skip = ["cp314t-*"]
 
 [tool.cibuildwheel.pyodide]
 build-frontend = {name = "build", args = ["--exports", "whole_archive"]}
