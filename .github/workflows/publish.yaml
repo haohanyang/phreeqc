@@ -48,7 +48,7 @@ jobs:
         env:
           CIBW_PLATFORM: linux
           CIBW_ARCHS: x86_64
-          
+
       - name: Upload sdist
         uses: actions/upload-artifact@v4
         with:
@@ -112,6 +112,7 @@ jobs:
         env:
           CIBW_PLATFORM: windows
           CIBW_ARCHS: AMD64
+          CIBW_SKIP: cp314t-*
 
       - name: Upload wheels
         uses: actions/upload-artifact@v4
