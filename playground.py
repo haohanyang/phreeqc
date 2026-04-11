@@ -1,4 +1,3 @@
-import os
 import tempfile
 
 import pandas as pd
@@ -6,8 +5,7 @@ import streamlit as st
 
 from phreeqc import Phreeqc
 
-DATABASE_DIR = os.path.join(os.path.dirname(__file__), "database")
-DATABASE_FILES = sorted(f for f in os.listdir(DATABASE_DIR) if f.endswith(".dat"))
+BUILTIN_DATABASES = Phreeqc.ListBuiltInDatabases()
 
 st.set_page_config(page_title="PHREEQC Playground", layout="wide")
 st.title("PHREEQC Playground")
@@ -16,49 +14,26 @@ st.title("PHREEQC Playground")
 st.sidebar.header("Database")
 db_source = st.sidebar.radio("Source", ["Built-in", "Upload"])
 
-db_path: str | None = None
+builtin_db: str | None = None
+uploaded_db_path: str | None = None
+
 if db_source == "Built-in":
     default_idx = (
-        DATABASE_FILES.index("phreeqc.dat") if "phreeqc.dat" in DATABASE_FILES else 0
+        BUILTIN_DATABASES.index("phreeqc.dat")
+        if "phreeqc.dat" in BUILTIN_DATABASES
+        else 0
     )
-    selected = st.sidebar.selectbox("Database file", DATABASE_FILES, index=default_idx)
-    db_path = os.path.join(DATABASE_DIR, selected)
+    builtin_db = st.sidebar.selectbox("Database", BUILTIN_DATABASES, index=default_idx)
 else:
     uploaded = st.sidebar.file_uploader("Upload .dat file", type=["dat"])
     if uploaded is not None:
         tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".dat")
         tmp.write(uploaded.read())
         tmp.flush()
-        db_path = tmp.name
+        uploaded_db_path = tmp.name
 
 # --- Main: input ---
 default_input = """\
-TITLE Example 2.--Temperature dependence of solubility
-                  of gypsum and anhydrite
-SOLUTION 1 Pure water
-        pH      7.0
-        temp    25.0
-EQUILIBRIUM_PHASES 1
-        Gypsum          0.0     1.0
-        Anhydrite       0.0     1.0
-REACTION_TEMPERATURE 1
-        25.0 75.0 in 51 steps
-SELECTED_OUTPUT
-        -file   ex2.sel
-        -temperature
-        -si     anhydrite  gypsum
-USER_GRAPH 1 Example 2
-        -headings Temperature Gypsum Anhydrite
-        -chart_title "Gypsum-Anhydrite Stability"
-        -axis_scale x_axis 25 75 5 0
-        -axis_scale y_axis auto 0.05 0.1
-        -axis_titles "Temperature, in degrees celsius" "Saturation index"
-        -initial_solutions false
-  -start
-  10 graph_x TC
-  20 graph_y SI("Gypsum") SI("Anhydrite")
-  -end
-END
 TITLE Example 2.--Temperature dependence of solubility
                   of gypsum and anhydrite
 SOLUTION 1 Pure water
@@ -112,14 +87,19 @@ def show_chart_dialog(df: pd.DataFrame) -> None:
 
 
 if run:
-    if db_path is None:
-        st.error("Please select or upload a database file.")
+    if db_source == "Upload" and uploaded_db_path is None:
+        st.error("Please upload a database file.")
     elif not input_text.strip():
         st.error("Input is empty.")
     else:
         try:
             pqc = Phreeqc()
-            db_errors = pqc.LoadDatabase(db_path)
+
+            if db_source == "Built-in":
+                db_errors = pqc.LoadBuiltInDatabase(builtin_db)
+            else:
+                db_errors = pqc.LoadDatabase(uploaded_db_path)
+
             if db_errors:
                 st.error(
                     f"Database load failed ({db_errors} error(s)):\n\n{pqc.GetErrorString()}"
