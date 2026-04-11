@@ -1,4 +1,26 @@
-from typing import Union
+from typing import Union, TypeAlias, Literal
+
+BUILT_IN_DB_FILE: TypeAlias = Literal[
+    "Amm.dat",
+    "core10.dat",
+    "llnl.dat",
+    "phreeqc.dat",
+    "Tipping_Hurley.dat",
+    "frezchem.dat",
+    "phreeqc_rates.dat",
+    "wateq4f.dat",
+    "ColdChem.dat",
+    "iso.dat",
+    "PHREEQC_ThermoddemV1.10_15Dec2020.dat",
+    "Concrete_PHR.dat",
+    "Kinec.v2.dat",
+    "minteq.dat",
+    "pitzer.dat",
+    "Concrete_PZ.dat",
+    "Kinec_v3.dat",
+    "minteq.v4.dat",
+    "sit.dat",
+]
 
 class Phreeqc:
     def __init__(self) -> None: ...
@@ -34,7 +56,6 @@ class Phreeqc:
         :returns: Number of errors encountered.
         """
         ...
-
     # ── Errors ────────────────────────────────────────────────────────────────
 
     def AddError(self, error_msg: str) -> int:
@@ -48,7 +69,6 @@ class Phreeqc:
     def GetErrorFileName(self) -> str: ...
     def GetErrorFileOn(self) -> bool: ...
     def GetErrorOn(self) -> bool: ...
-
     def GetErrorString(self) -> str:
         """Retrieve error messages from the last run.
 
@@ -117,7 +137,6 @@ class Phreeqc:
         :returns: A list of component name strings.
         """
         ...
-
     # ── Database ──────────────────────────────────────────────────────────────
 
     def LoadDatabase(self, filename: str) -> int:
@@ -138,6 +157,23 @@ class Phreeqc:
         """
         ...
 
+    def LoadBuiltInDatabase(self, name: BUILT_IN_DB_FILE) -> int:
+        """Load one of the built-in PHREEQC database files bundled with this package.
+
+        All previous definitions are cleared.
+        :param name: Filename of the built-in database (e.g. ``"phreeqc.dat"``).
+        :returns: Number of errors encountered.
+        :raises FileNotFoundError: If *name* is not found in the bundled databases.
+        """
+        ...
+
+    @staticmethod
+    def ListBuiltInDatabases() -> list[str]:
+        """Return the names of all built-in database files bundled with this package.
+
+        :returns: Sorted list of database filenames (e.g. ``["Amm.dat", ...]``).
+        """
+        ...
     # ── Run ───────────────────────────────────────────────────────────────────
 
     def RunFile(self, filename: str) -> int:
@@ -155,7 +191,6 @@ class Phreeqc:
         :returns: Number of errors encountered.
         """
         ...
-
     # ── Selected Output ───────────────────────────────────────────────────────
 
     def GetCurrentSelectedOutputUserNumber(self) -> int:
@@ -189,7 +224,6 @@ class Phreeqc:
 
     def GetSelectedOutputFileName(self) -> str: ...
     def GetSelectedOutputFileOn(self) -> bool: ...
-
     def GetSelectedOutputRowCount(self) -> int:
         """Retrieve the number of rows in the selected-output buffer.
 
@@ -202,7 +236,6 @@ class Phreeqc:
     def GetSelectedOutputStringLine(self, n: int) -> str: ...
     def GetSelectedOutputStringLineCount(self) -> int: ...
     def GetSelectedOutputStringOn(self) -> bool: ...
-
     def GetSelectedOutputValue(self, row: int, col: int) -> Union[int, float, str]:
         """Return the value at the specified row and column.
 

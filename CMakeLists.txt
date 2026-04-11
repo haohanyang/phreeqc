@@ -18,6 +18,11 @@ target_link_libraries(_phreeqc PRIVATE IPhreeqc::IPhreeqc)
 
 install(TARGETS _phreeqc DESTINATION phreeqc)
 
+install(DIRECTORY "${CMAKE_SOURCE_DIR}/src/phreeqc/databases/"
+    DESTINATION "phreeqc/databases"
+    FILES_MATCHING PATTERN "*.dat"
+)
+
 set(PYTHON_PKG_DIR "${CMAKE_SOURCE_DIR}/src/phreeqc")
 
 if(CMAKE_BUILD_TYPE STREQUAL "Debug")

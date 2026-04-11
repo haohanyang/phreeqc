@@ -1,15 +1,11 @@
-from pathlib import Path
 from phreeqc import Phreeqc
 
 
-def test_ex2(request):
+def test_ex2():
     # https://water.usgs.gov/water-resources/software/PHREEQC/documentation/phreeqc3-html/phreeqc3-64.htm#50593807_28577
 
-    db_path = Path(request.fspath).parent / "phreeqc.dat"
-    assert db_path.exists()
-
     p = Phreeqc()
-    p.LoadDatabase(str(db_path))
+    p.LoadBuiltInDatabase("phreeqc.dat")
     p.RunString(
         """
 TITLE Example 2.--Temperature dependence of solubility

@@ -37,6 +37,9 @@ jobs:
         with:
           version: ${{ github.event.inputs.version }}
 
+      - name: Download PHREEQC databases
+        run: python scripts/download_databases.py
+
       - name: Build sdist
         run: pipx run build --sdist
 
@@ -78,6 +81,9 @@ jobs:
         with:
           version: ${{ github.event.inputs.version }}
 
+      - name: Download PHREEQC databases
+        run: python scripts/download_databases.py
+
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.4.0
         env:
@@ -106,6 +112,9 @@ jobs:
         uses: ./.github/actions/update-version
         with:
           version: ${{ github.event.inputs.version }}
+
+      - name: Download PHREEQC databases
+        run: python scripts/download_databases.py
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.4.0
@@ -137,6 +146,9 @@ jobs:
         with:
           version: ${{ github.event.inputs.version }}
 
+      - name: Download PHREEQC databases
+        run: python scripts/download_databases.py
+
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.4.0
         env:
@@ -165,6 +177,9 @@ jobs:
         uses: ./.github/actions/update-version
         with:
           version: ${{ github.event.inputs.version }}
+
+      - name: Download PHREEQC databases
+        run: python scripts/download_databases.py
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.4.0

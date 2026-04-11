@@ -19,5 +19,5 @@ runs:
       shell: bash
 
     - name: Update version
-      run: python update-version.py ${{ inputs.version }}
+      run: python scripts/update-version.py ${{ inputs.version }}
       shell: bash

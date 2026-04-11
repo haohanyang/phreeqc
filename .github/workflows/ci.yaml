@@ -20,6 +20,9 @@ jobs:
         with:
           python-version: 3.13
 
+      - name: Download PHREEQC databases
+        run: python scripts/download_databases.py
+
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.4.0
         env:
@@ -44,6 +47,9 @@ jobs:
         with:
           build-type: Release
 
+      - name: Download PHREEQC databases
+        run: python scripts/download_databases.py
+
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.4.0
         env:
@@ -67,6 +73,9 @@ jobs:
         uses: ./.github/actions/setup-deps
         with:
           build-type: Release
+
+      - name: Download PHREEQC databases
+        run: python scripts/download_databases.py
 
       - name: Build wheels
         uses: pypa/cibuildwheel@v3.4.0

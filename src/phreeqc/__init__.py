@@ -1,7 +1,31 @@
 from __future__ import annotations
+from typing import TypeAlias, Literal
+import importlib.resources
 from typing import Union
 
 from ._phreeqc import _Phreeqc as PhreeqcBase
+
+built_in_db_files = [
+    "Amm.dat",
+    "core10.dat",
+    "llnl.dat",
+    "phreeqc.dat",
+    "Tipping_Hurley.dat",
+    "frezchem.dat",
+    "phreeqc_rates.dat",
+    "wateq4f.dat",
+    "ColdChem.dat",
+    "iso.dat",
+    "PHREEQC_ThermoddemV1.10_15Dec2020.dat",
+    "Concrete_PHR.dat",
+    "Kinec.v2.dat",
+    "minteq.dat",
+    "pitzer.dat",
+    "Concrete_PZ.dat",
+    "Kinec_v3.dat",
+    "minteq.v4.dat",
+    "sit.dat",
+]
 
 
 class Phreeqc(PhreeqcBase):
@@ -58,6 +82,31 @@ class Phreeqc(PhreeqcBase):
         :see: GetComponent, GetComponentCount, ListComponents
         """
         return [self.GetComponent(i) for i in range(self.GetComponentCount())]
+
+    def LoadBuiltInDatabase(self, name: str) -> int:
+        """Load a built-in PHREEQC database files bundled with this package.
+
+        :param name: Filename of the built-in database (e.g. ``"phreeqc.dat"``).
+        :returns: Number of errors encountered.
+        :raises FileNotFoundError: If *name* is not found in the bundled databases.
+        """
+        db_ref = importlib.resources.files("phreeqc") / "databases" / name
+        with importlib.resources.as_file(db_ref) as path:
+            if not path.exists():
+                msg = f"Built-in database {name!r} not found. "
+                msg += "Use Phreeqc.ListBuiltInDatabases() to see available names."
+                raise FileNotFoundError(msg)
+            return self.LoadDatabase(str(path))
+
+    @staticmethod
+    def ListBuiltInDatabases() -> list[str]:
+        """Return the names of all built-in database files bundled with this package.
+
+        :returns: Sorted list of database filenames (e.g. ``["Amm.dat", ...]``).
+        """
+        db_dir = importlib.resources.files("phreeqc") / "databases"
+        with importlib.resources.as_file(db_dir) as path:
+            return sorted(p.name for p in path.iterdir() if p.suffix == ".dat")
 
 
 __all__ = ["__doc__", "Phreeqc", "__version__"]

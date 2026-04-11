@@ -61,7 +61,7 @@ skip = ["cp314t-*"]
 build-frontend = {name = "build", args = ["--exports", "whole_archive"]}
 
 [tool.cibuildwheel.linux]
-before-all = "bash prepare.sh"
+before-all = "bash scripts/prepare.sh"
 
 [tool.ruff.lint]
 extend-select = [
