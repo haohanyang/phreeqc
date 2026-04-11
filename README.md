@@ -2,6 +2,8 @@
 
 Python bindings of [IPHREEQC 3.8.6](https://www.usgs.gov/software/phreeqc-version-3)
 
+Checkout the [Playground](https://phreeqc.streamlit.app/).
+
 ## Install
 
 ```
