@@ -27,7 +27,7 @@ static py::object var_to_py(const VAR &var)
     case TT_STRING:
         return py::cast(std::string(var.sVal));
     case TT_EMPTY:
-        throw std::runtime_error("Cell contains no data (TT_EMPTY)");
+        return py::cast(nullptr);
     default:
         throw std::runtime_error("Cell contains an error value (TT_ERROR)");
     }
